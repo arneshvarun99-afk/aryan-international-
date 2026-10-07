@@ -53,74 +53,144 @@ function brandScroll(){
 addEventListener('scroll',brandScroll,{passive:true});brandScroll();
 
 
-const globeStage=document.getElementById('globeStage');
-const globeStrip=document.getElementById('globeStrip');
 const heroEl=document.querySelector('.hero');
+const globeStage=document.getElementById('globeStage');
+const globeCanvas=document.getElementById('globeCanvas');
 
-if(globeStage && globeStrip){
-  let rotation=0;
-  let targetRotation=0;
-  let scrollSpeed=.055;
-  let lastX=null;
-  let hovering=false;
-  let tiltX=0,tiltY=0,targetTiltX=0,targetTiltY=0;
-  const reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+if(heroEl && globeCanvas){
+  (()=>{
+    const gl=globeCanvas.getContext('webgl',{alpha:true,antialias:true,preserveDrawingBuffer:false,powerPreference:'high-performance'});
+    if(!gl)return;
 
-  const updateSpeed=()=>{
-    if(!heroEl)return;
-    const r=heroEl.getBoundingClientRect();
-    const progress=clamp((innerHeight-r.top)/(innerHeight+r.height),0,1);
-    scrollSpeed=.035 + progress*.11;
-  };
-  addEventListener('scroll',updateSpeed,{passive:true});
-  updateSpeed();
+    const vertexSource=[
+      'attribute vec2 aPosition;',
+      'varying vec2 vUv;',
+      'void main(){',
+      'vUv=aPosition*0.5+0.5;',
+      'gl_Position=vec4(aPosition,0.0,1.0);',
+      '}'
+    ].join('\n');
 
-  globeStage.addEventListener('pointerenter',e=>{
-    hovering=true;
-    lastX=e.clientX;
-  });
+    const fragmentSource=[
+      'precision highp float;',
+      'uniform sampler2D uEarth;',
+      'uniform float uYaw;',
+      'uniform float uPitch;',
+      'uniform float uAlpha;',
+      'varying vec2 vUv;',
+      'const float PI=3.141592653589793;',
+      'mat3 rotX(float a){float s=sin(a),c=cos(a);return mat3(1.0,0.0,0.0,0.0,c,-s,0.0,s,c);}',
+      'mat3 rotY(float a){float s=sin(a),c=cos(a);return mat3(c,0.0,s,0.0,1.0,0.0,-s,0.0,c);}',
+      'void main(){',
+      'vec2 p=vUv*2.0-1.0;p.y*=-1.0;',
+      'float r2=dot(p,p);if(r2>1.0)discard;',
+      'float z=sqrt(max(0.0,1.0-r2));',
+      'vec3 n=normalize(vec3(p.x,p.y,z));',
+      'n=rotX(uPitch)*rotY(uYaw)*n;',
+      'float lon=atan(n.z,n.x);',
+      'float lat=asin(clamp(n.y,-1.0,1.0));',
+      'vec2 uv=vec2(lon/(2.0*PI)+0.5,0.5-lat/PI);',
+      'vec3 tex=texture2D(uEarth,uv).rgb;',
+      'vec3 lightDir=normalize(vec3(-0.48,0.20,0.84));',
+      'float diffuse=max(dot(n,lightDir),0.0);',
+      'float day=0.30+0.84*diffuse;',
+      'vec3 viewDir=vec3(0.0,0.0,1.0);',
+      'float rim=pow(1.0-max(dot(n,viewDir),0.0),2.3);',
+      'float spec=pow(max(dot(reflect(-lightDir,n),viewDir),0.0),22.0);',
+      'vec3 color=tex*day;',
+      'color+=vec3(0.18,0.40,0.55)*rim*0.28;',
+      'color+=vec3(1.0,0.72,0.38)*spec*0.12;',
+      'float edge=pow(max(0.0,1.0-r2),0.12);',
+      'gl_FragColor=vec4(color,uAlpha*edge);',
+      '}'
+    ].join('\n');
 
-  globeStage.addEventListener('pointermove',e=>{
-    const r=globeStage.getBoundingClientRect();
-    const nx=e.clientX/r.width-.5;
-    const ny=e.clientY/r.height-.5;
-    if(lastX!==null){
-      targetRotation += (e.clientX-lastX)*.18;
-    }
-    lastX=e.clientX;
-    targetTiltX=clamp(-ny*7,-5,5);
-    targetTiltY=clamp(nx*9,-7,7);
-  });
+    const compile=(type,source)=>{
+      const shader=gl.createShader(type);
+      gl.shaderSource(shader,source);
+      gl.compileShader(shader);
+      if(!gl.getShaderParameter(shader,gl.COMPILE_STATUS)){console.error(gl.getShaderInfoLog(shader));return null;}
+      return shader;
+    };
+    const vs=compile(gl.VERTEX_SHADER,vertexSource);
+    const fs=compile(gl.FRAGMENT_SHADER,fragmentSource);
+    if(!vs||!fs)return;
 
-  globeStage.addEventListener('pointerleave',()=>{
-    hovering=false;
-    lastX=null;
-    targetTiltX=0;
-    targetTiltY=0;
-  });
+    const program=gl.createProgram();
+    gl.attachShader(program,vs);gl.attachShader(program,fs);gl.linkProgram(program);
+    if(!gl.getProgramParameter(program,gl.LINK_STATUS)){console.error(gl.getProgramInfoLog(program));return;}
+    gl.useProgram(program);
 
-  let raf;
-  const renderGlobe=()=>{
-    raf=requestAnimationFrame(renderGlobe);
+    const buffer=gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER,buffer);
+    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]),gl.STATIC_DRAW);
+    const pos=gl.getAttribLocation(program,'aPosition');
+    gl.enableVertexAttribArray(pos);
+    gl.vertexAttribPointer(pos,2,gl.FLOAT,false,0,0);
 
-    if(!reduced && !hovering){
-      rotation += scrollSpeed;
-    }
+    const yawLoc=gl.getUniformLocation(program,'uYaw');
+    const pitchLoc=gl.getUniformLocation(program,'uPitch');
+    const alphaLoc=gl.getUniformLocation(program,'uAlpha');
+    const texLoc=gl.getUniformLocation(program,'uEarth');
 
-    rotation += (targetRotation-rotation)*.04;
-    targetRotation = rotation;
+    const texture=gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D,texture);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.REPEAT);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,2,2,0,gl.RGBA,gl.UNSIGNED_BYTE,new Uint8Array([8,18,27,255,20,52,62,255,20,52,62,255,8,18,27,255]));
 
-    tiltX += (targetTiltX-tiltX)*.08;
-    tiltY += (targetTiltY-tiltY)*.08;
+    const earth=new Image();
+    earth.crossOrigin='anonymous';
+    earth.onload=()=>{
+      gl.bindTexture(gl.TEXTURE_2D,texture);
+      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);
+      gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,earth);
+    };
+    earth.src='https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_atmos_2048.jpg';
 
-    // Three identical maps make a seamless scrolling longitude loop.
-    const shift=((rotation % 33.333333)+33.333333)%33.333333;
-    globeStrip.style.transform=`translate3d(-${shift}%,0,0) rotateX(${tiltX*.25}deg) rotateY(${tiltY*.18}deg)`;
-  };
-  renderGlobe();
+    let yaw=.35,pitch=-.12,targetYaw=yaw,targetPitch=pitch;
+    let scrollSpeed=.00018,lastX=null,lastY=null,pointerActive=false;
+    const reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+
+    const updateScrollSpeed=()=>{
+      const r=heroEl.getBoundingClientRect();
+      const p=clamp((innerHeight-r.top)/(innerHeight+r.height),0,1);
+      scrollSpeed=.00012+p*.00058;
+    };
+    addEventListener('scroll',updateScrollSpeed,{passive:true});
+    updateScrollSpeed();
+
+    heroEl.addEventListener('pointermove',e=>{
+      const r=heroEl.getBoundingClientRect();
+      const nx=e.clientX/r.width-.5,ny=e.clientY/r.height-.5;
+      if(lastX!==null){targetYaw+=(e.clientX-lastX)*.006;targetPitch=clamp(targetPitch-(e.clientY-lastY)*.003,-.5,.5);}
+      lastX=e.clientX;lastY=e.clientY;pointerActive=true;
+      globeCanvas.style.transform='translate3d(0,0,0) rotateX('+(ny*-1.2)+'deg) rotateY('+(nx*1.6)+'deg)';
+    });
+    heroEl.addEventListener('pointerleave',()=>{lastX=null;lastY=null;pointerActive=false;globeCanvas.style.transform='translate3d(0,0,0)';});
+
+    const resize=()=>{
+      const rect=globeCanvas.getBoundingClientRect(),dpr=Math.min(devicePixelRatio||1,2);
+      const w=Math.max(1,Math.floor(rect.width*dpr)),h=Math.max(1,Math.floor(rect.height*dpr));
+      if(globeCanvas.width!==w||globeCanvas.height!==h){globeCanvas.width=w;globeCanvas.height=h;gl.viewport(0,0,w,h);}
+    };
+    addEventListener('resize',resize);resize();
+
+    const render=()=>{
+      requestAnimationFrame(render);
+      if(!reduced&&!pointerActive)targetYaw+=scrollSpeed;
+      yaw+=(targetYaw-yaw)*.085;pitch+=(targetPitch-pitch)*.085;
+      gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);gl.useProgram(program);
+      gl.uniform1f(yawLoc,yaw);gl.uniform1f(pitchLoc,pitch);gl.uniform1f(alphaLoc,.92);
+      gl.uniform1i(texLoc,0);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,texture);
+      gl.drawArrays(gl.TRIANGLES,0,6);
+    };
+    render();
+  })();
 }
-
 document.querySelectorAll('.card,.prod,.step').forEach(card=>{
   card.addEventListener('mousemove',e=>{
     if(innerWidth<900)return;
