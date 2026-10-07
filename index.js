@@ -59,7 +59,7 @@ const globeCanvas=document.getElementById('globeCanvas');
 if(globeStage && globeCanvas){
   (async()=>{
     try{
-      const {default:THREE}=await import('https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js');
+      const THREE=await import('https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js');
       const renderer=new THREE.WebGLRenderer({canvas:globeCanvas,alpha:true,antialias:true,powerPreference:'high-performance'});
       renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));
       renderer.outputColorSpace=THREE.SRGBColorSpace;
