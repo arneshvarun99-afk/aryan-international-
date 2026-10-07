@@ -6,7 +6,7 @@
 <meta name="description" content="Aryan International connects global buyers with Indian supply through sourcing, quotation and export support.">
 <title>Aryan International | India, Ready for the World</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=DM+Serif+Display&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 :root{
   --ink:#111214;
@@ -1113,10 +1113,7 @@ body{background:var(--cream);color:#111}
 
 <header class="hero">
 <div class="heroBg"></div><div class="glow"></div>
-<div class="globeWrap" id="globeStage" aria-hidden="true">
-  <canvas class="globeCanvas" id="globeCanvas" aria-label="Interactive realistic rotating Earth"></canvas>
-  <div class="globeAura"></div>
-</div>
+<div id="canvas-container" aria-hidden="true"></div>
 <div class="heroIn">
 <div class="copy reveal">
 <div class="eyebrow">India · Sourcing · Export</div>
@@ -1332,6 +1329,8 @@ if (canvas && hero) {
   animate();
 }
 </script>
-<script src="index.js?v=202610071118"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="index.js?v=202610071230"></script>
 </body>
 </html>
