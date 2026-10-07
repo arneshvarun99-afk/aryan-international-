@@ -138,7 +138,6 @@ body{background:#f4f4ef;color:#111}
 .copy{grid-column:2;grid-row:1}
 .globeWrap{grid-column:1;grid-row:1;height:min(760px,78vh);min-height:520px;background:#171717 url('garlic.svg') center/cover no-repeat;border-radius:20px;overflow:hidden}
 .globeWrap:before{content:"";position:absolute;inset:24px;border:1px solid #ffffff2b;border-radius:14px}
-.globe{visibility:hidden}
 .hero .copy h1{font-family:"DM Serif Display",Georgia,serif;font-size:clamp(76px,9vw,150px);line-height:.84;letter-spacing:-.045em;color:#111}
 .hero .copy h1 em{color:#d2ff00;-webkit-text-stroke:1px #111}
 .hero .sub{color:#555b54;max-width:650px}
@@ -195,6 +194,37 @@ body{background:#f4f4ef;color:#111}
 }
 
 /* Aryan palette + high-motion editorial layer */
+/* Interactive Earth globe */
+#globeStage.globeWrap{
+  background:radial-gradient(circle at 50% 48%,#173b3533,transparent 40%),radial-gradient(circle at 62% 45%,#c89a5218,transparent 48%),#071019;
+  border:1px solid #ffffff10;
+  box-shadow:0 30px 90px #0d162038,inset 0 0 90px #0008;
+  transform:translateZ(0);
+  animation:none;
+}
+#globeStage:before{inset:24px;border-color:#ffffff18;pointer-events:none;z-index:4}
+#globeStage:after{
+  content:"";position:absolute;inset:0;border-radius:20px;pointer-events:none;mix-blend-mode:screen;z-index:3;
+  background:radial-gradient(circle at 50% 50%,transparent 34%,#07101910 57%,#071019b8 100%),linear-gradient(120deg,#173b3522,transparent 44%,#c89a5220);
+}
+.globeCanvas{
+  width:min(650px,92%);height:auto;aspect-ratio:1;display:block;position:relative;z-index:2;
+  filter:drop-shadow(0 25px 50px #0009);cursor:grab;touch-action:none;transform-origin:center;
+  transition:filter .25s ease;
+}
+#globeStage.is-grabbing .globeCanvas{cursor:grabbing}
+#globeStage:hover .globeCanvas{filter:drop-shadow(0 30px 70px #000b)}
+.globeHint{
+  position:absolute;z-index:5;left:50%;bottom:22px;transform:translateX(-50%);
+  display:flex;align-items:center;gap:9px;padding:9px 13px;border:1px solid #ffffff1c;border-radius:999px;
+  background:#071019a8;backdrop-filter:blur(10px);color:#d9e0df;font-size:9px;letter-spacing:.19em;
+  white-space:nowrap;pointer-events:none;
+}
+.globeHintDot{width:7px;height:7px;border-radius:50%;background:var(--gold2);box-shadow:0 0 14px #e2c07eaa;animation:globeDot 1.6s ease-in-out infinite}
+@keyframes globeDot{0%,100%{transform:scale(.85);opacity:.65}50%{transform:scale(1.2);opacity:1}}
+@media(max-width:560px){#globeStage.globeWrap{border-radius:16px}.globeHint{bottom:15px;font-size:8px}}
+@media(prefers-reduced-motion:reduce){.globeHintDot{animation:none}.globeCanvas{transition:none}}
+
 :root{--lime:var(--gold2);--canvas:var(--cream);--dark:var(--navy)}
 body{background:var(--cream);color:#111}
 .nav{background:linear-gradient(180deg,#0d1620f5,#0d1620d9 70%,transparent);color:#fff;mix-blend-mode:normal}
@@ -232,9 +262,7 @@ body{background:var(--cream);color:#111}
 
 </style>
 </head>
-<body></div><div class="loader-copy"><span class="loader-status">Loading Experience</span><span class="loader-dots"></span></div><div class="loader-meta"><span>India → Global</span><span>ARYAN INTERNATIONAL</span></div><div class="loader-track" aria-hidden="true"><div class="loader-progress"></div></div></div>
-
-<div class="noise"></div><div class="progress" id="progress"></div>
+<body><div class="noise"></div><div class="progress" id="progress"></div>
 <nav class="nav" id="nav"><div class="navin"><a class="brand" href="#">ARYAN <b>INTERNATIONAL</b></a><div class="links"><a href="#why">Why us</a><a href="products.html?v=202610071">Products</a><a href="#process">Process</a><a href="#quote">RFQ</a></div><a class="navbtn" href="#quote">Start a conversation →</a></div></nav>
 
 <header class="hero">
@@ -245,8 +273,9 @@ body{background:var(--cream);color:#111}
 <p class="sub">Aryan International helps overseas buyers turn a product requirement into a practical sourcing conversation with Indian supply.</p>
 <div class="actions"><a class="btn" href="#quote">Tell us what you need</a><a class="btn alt" href="products.html?v=202610071">Explore products</a></div>
 <div class="micro"><span>Buyer-led sourcing</span><span>Clear specifications</span><span>Export coordination</span></div></div>
-<div class="globeWrap reveal">
-<div class="globe"><div class="orbit"></div><div class="orbit two"></div><div class="orbit three"></div><div class="meridian"></div><div class="meridian m2"></div><div class="parallel"></div><div class="pin one"></div><div class="pin two"></div><div class="pin three"></div><div class="route"></div><div class="route r2"></div></div>
+<div class="globeWrap reveal" id="globeStage">
+<canvas class="globeCanvas" id="globeCanvas" aria-label="Interactive rotating Earth"></canvas>
+<div class="globeHint" aria-hidden="true"><span class="globeHintDot"></span><span>MOVE CURSOR TO ROTATE</span></div>
 <div class="floatCard fc1"><b>Buyer enquiry</b><span>Product + quantity + destination</span></div>
 <div class="floatCard fc2"><b>India sourcing</b><span>Find the relevant supply</span></div>
 <div class="floatCard fc3"><b>Next step</b><span>Quote → sample → order</span></div>
