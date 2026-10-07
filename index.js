@@ -1,3 +1,141 @@
+
+/* Full-screen 3D Earth from the supplied reference implementation */
+(function initEarthHero(){
+  const container=document.getElementById('canvas-container');
+  const hero=document.querySelector('.hero');
+  if(!container || !hero || !window.THREE || !THREE.OrbitControls) return;
+
+  let scene,camera,renderer,globe,stars,controls;
+  let mouseX=0,mouseY=0,targetX=0,targetY=0;
+  let autoRotateSpeed=.55;
+  const clock=performance.now();
+
+  function init(){
+    scene=new THREE.Scene();
+    scene.fog=new THREE.FogExp2(0x030712,0.0008);
+
+    camera=new THREE.PerspectiveCamera(45,window.innerWidth/window.innerHeight,0.1,1000);
+    camera.position.z=250;
+
+    renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+    renderer.setSize(window.innerWidth,window.innerHeight);
+    renderer.toneMapping=THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure=1.1;
+    container.appendChild(renderer.domElement);
+
+    controls=new THREE.OrbitControls(camera,renderer.domElement);
+    controls.enableDamping=true;
+    controls.dampingFactor=.05;
+    controls.enableZoom=false;
+    controls.autoRotate=true;
+    controls.autoRotateSpeed=autoRotateSpeed;
+    controls.enablePan=false;
+
+    const ambientLight=new THREE.AmbientLight(0xffffff,.8);
+    scene.add(ambientLight);
+
+    const sunLight=new THREE.DirectionalLight(0xfff5ea,1.8);
+    sunLight.position.set(200,100,150);
+    scene.add(sunLight);
+
+    const blueRimLight=new THREE.DirectionalLight(0x3b82f6,.8);
+    blueRimLight.position.set(-200,-50,-100);
+    scene.add(blueRimLight);
+
+    const globeRadius=65;
+    const geometry=new THREE.SphereGeometry(globeRadius,96,96);
+    const textureLoader=new THREE.TextureLoader();
+    const mapTexture=textureLoader.load('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg');
+
+    const material=new THREE.MeshStandardMaterial({
+      map:mapTexture,
+      roughness:.62,
+      metalness:.08
+    });
+
+    globe=new THREE.Mesh(geometry,material);
+    globe.rotation.y=-.35;
+    scene.add(globe);
+
+    const atmosphereGeo=new THREE.SphereGeometry(globeRadius+1.6,96,96);
+    const atmosphereMat=new THREE.MeshBasicMaterial({
+      color:0x60a5fa,
+      transparent:true,
+      opacity:.15,
+      side:THREE.BackSide
+    });
+    scene.add(new THREE.Mesh(atmosphereGeo,atmosphereMat));
+
+    createMinimalStarfield();
+
+    document.addEventListener('mousemove',onDocumentMouseMove,{passive:true});
+    window.addEventListener('resize',onWindowResize);
+  }
+
+  function createMinimalStarfield(){
+    const starCount=180;
+    const geometry=new THREE.BufferGeometry();
+    const positions=new Float32Array(starCount*3);
+
+    for(let i=0;i<starCount;i++){
+      const i3=i*3;
+      positions[i3]=(Math.random()-.5)*800;
+      positions[i3+1]=(Math.random()-.5)*800;
+      positions[i3+2]=(Math.random()-.5)*800;
+    }
+
+    geometry.setAttribute('position',new THREE.BufferAttribute(positions,3));
+
+    const material=new THREE.PointsMaterial({
+      color:0xffffff,
+      size:1.2,
+      transparent:true,
+      opacity:.5,
+      blending:THREE.AdditiveBlending,
+      depthWrite:false
+    });
+
+    stars=new THREE.Points(geometry,material);
+    scene.add(stars);
+  }
+
+  function onDocumentMouseMove(event){
+    mouseX=(event.clientX-window.innerWidth/2)*.0003;
+    mouseY=(event.clientY-window.innerHeight/2)*.0003;
+  }
+
+  function onWindowResize(){
+    camera.aspect=window.innerWidth/window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth,window.innerHeight);
+  }
+
+  function animate(){
+    requestAnimationFrame(animate);
+
+    targetX+=(mouseX-targetX)*.05;
+    targetY+=(mouseY-targetY)*.05;
+
+    // Cursor parallax is a gentle camera movement, not a fake 2D globe transform.
+    camera.position.x=THREE.MathUtils.lerp(camera.position.x,targetX*45,.04);
+    camera.position.y=THREE.MathUtils.lerp(camera.position.y,-targetY*45,.04);
+    camera.lookAt(scene.position);
+
+    if(stars) stars.rotation.y-=.0001;
+
+    // Scroll through the hero subtly changes auto-rotation speed.
+    const r=hero.getBoundingClientRect();
+    const progress=Math.max(0,Math.min(1,(window.innerHeight-r.top)/(window.innerHeight+r.height)));
+    controls.autoRotateSpeed=.45+progress*.25;
+
+    controls.update();
+    renderer.render(scene,camera);
+  }
+
+  init();
+  animate();
+})();
 const nav=document.getElementById('nav'),bar=document.getElementById('progress');
 function scrollFx(){
   const h=document.documentElement.scrollHeight-innerHeight;
