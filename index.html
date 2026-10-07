@@ -325,6 +325,99 @@ body{background:var(--cream);color:#111}
   #globeStage .globeCanvas{width:min(390px,84%)}
 }
 
+/* Centered globe editorial hero */
+.hero{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 50% 43%,#173b3530,transparent 28%),
+    radial-gradient(circle at 50% 52%,#c89a5210,transparent 44%),
+    linear-gradient(135deg,#061018 0%,#0b1720 55%,#0d1620 100%);
+}
+.heroBg{background:none;opacity:.35}
+.glow{
+  width:760px;height:760px;right:50%;top:50%;
+  transform:translate(50%,-50%);
+  background:radial-gradient(circle,#173b3530,transparent 65%);
+  filter:blur(8px);
+}
+.heroIn{
+  width:min(1400px,100%);
+  min-height:calc(100vh - 82px);
+  padding:125px 28px 70px;
+  display:grid;
+  place-items:center;
+  position:relative;
+  isolation:isolate;
+}
+.globeWrap{
+  grid-area:1/1;
+  width:min(660px,58vw);
+  height:min(660px,72vh);
+  min-height:430px;
+  position:relative;
+  display:grid;
+  place-items:center;
+  background:transparent;
+  border:0;
+  border-radius:50%;
+  box-shadow:none;
+  overflow:visible;
+  z-index:1;
+  opacity:1;
+}
+.globeWrap:before,.globeWrap:after{display:none}
+.globeCanvas{
+  width:min(560px,52vw);
+  max-width:100%;
+  height:auto;
+  aspect-ratio:1;
+  opacity:.90;
+  filter:drop-shadow(0 20px 55px #0009) drop-shadow(0 0 42px #6d9db41c);
+  mix-blend-mode:screen;
+}
+.copy{
+  grid-area:1/1;
+  width:min(900px,92%);
+  z-index:4;
+  text-align:center;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  position:relative;
+}
+.copy .eyebrow{justify-content:center}
+.copy h1{
+  color:#fff!important;
+  text-shadow:0 6px 35px #0009;
+  max-width:980px;
+}
+.copy h1 em{
+  color:var(--gold2)!important;
+  -webkit-text-stroke:0!important;
+  text-shadow:0 6px 35px #0009;
+}
+.hero .sub{color:#d8dedf;max-width:680px;text-shadow:0 3px 22px #0008}
+.actions{justify-content:center}
+.micro{justify-content:center;border-top:1px solid #ffffff18;padding-top:15px}
+.nav{background:linear-gradient(180deg,#071019f5,#071019d9 72%,transparent)}
+.nav.scrolled{background:#071019e8}
+.navbtn{background:var(--gold2);color:#111;border-color:transparent}
+.ticker{background:var(--forest);border-color:var(--forest)}
+@media(max-width:900px){
+  .heroIn{min-height:calc(100vh - 70px);padding:105px 20px 55px}
+  .globeWrap{width:min(620px,92vw);height:min(620px,68vh)}
+  .globeCanvas{width:min(520px,80vw)}
+  .copy{width:94%}
+}
+@media(max-width:560px){
+  .heroIn{min-height:calc(100vh - 62px);padding:92px 18px 44px}
+  .globeWrap{width:94vw;height:500px}
+  .globeCanvas{width:min(440px,92vw);opacity:.78}
+  .copy h1{font-size:58px!important}
+  .hero .sub{font-size:16px;line-height:1.55}
+  .micro{gap:15px}
+}
+
 </style>
 </head>
 <body><div class="noise"></div><div class="progress" id="progress"></div>
@@ -333,17 +426,15 @@ body{background:var(--cream);color:#111}
 <header class="hero">
 <div class="heroBg"></div><div class="glow"></div>
 <div class="heroIn">
-<div class="copy reveal"><div class="eyebrow">India · Sourcing · Export</div>
+<div class="globeWrap" id="globeStage" aria-hidden="true">
+<canvas class="globeCanvas" id="globeCanvas" aria-label="Interactive rotating Earth"></canvas>
+</div>
+<div class="copy reveal">
+<div class="eyebrow">India · Sourcing · Export</div>
 <h1>From India.<br><em>To anywhere.</em></h1>
 <p class="sub">Aryan International helps overseas buyers turn a product requirement into a practical sourcing conversation with Indian supply.</p>
 <div class="actions"><a class="btn" href="#quote">Tell us what you need</a><a class="btn alt" href="products.html?v=202610071">Explore products</a></div>
-<div class="micro"><span>Buyer-led sourcing</span><span>Clear specifications</span><span>Export coordination</span></div></div>
-<div class="globeWrap reveal" id="globeStage">
-<canvas class="globeCanvas" id="globeCanvas" aria-label="Interactive rotating Earth"></canvas>
-<div class="globeHint" aria-hidden="true"><span class="globeHintDot"></span><span>MOVE CURSOR TO ROTATE</span></div>
-<div class="floatCard fc1"><b>Buyer enquiry</b><span>Product + quantity + destination</span></div>
-<div class="floatCard fc2"><b>India sourcing</b><span>Find the relevant supply</span></div>
-<div class="floatCard fc3"><b>Next step</b><span>Quote → sample → order</span></div>
+<div class="micro"><span>Buyer-led sourcing</span><span>Clear specifications</span><span>Export coordination</span></div>
 </div>
 </div></header>
 
