@@ -291,6 +291,13 @@ document.querySelectorAll('.productLaunch').forEach(card=>{
   });
 });
 
+/* Clear the transition overlay when returning via browser back/forward cache. */
+function resetProductTransition(){
+  document.body.classList.remove('product-transition');
+  document.querySelectorAll('.productLaunch.launching').forEach(el=>el.classList.remove('launching'));
+}
+addEventListener('pageshow', resetProductTransition);
+
 function sendMail(e){
  e.preventDefault();
  const body=`Buyer enquiry\n\nName / company: ${name.value}\nEmail: ${email.value}\nCountry: ${country.value}\nProduct: ${product.value}\nEstimated quantity: ${qty.value}\nDetails: ${details.value}`;
