@@ -58,139 +58,177 @@ const globeStage=document.getElementById('globeStage');
 const globeCanvas=document.getElementById('globeCanvas');
 
 if(heroEl && globeCanvas){
-  (()=>{
-    const gl=globeCanvas.getContext('webgl',{alpha:true,antialias:true,preserveDrawingBuffer:false,powerPreference:'high-performance'});
-    if(!gl)return;
+  import('https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js').then(THREE=>{
+    const renderer=new THREE.WebGLRenderer({
+      canvas:globeCanvas,
+      alpha:true,
+      antialias:true,
+      powerPreference:'high-performance'
+    });
+    renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));
+    renderer.outputColorSpace=THREE.SRGBColorSpace;
+    renderer.toneMapping=THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure=1.05;
 
-    const vertexSource=[
-      'attribute vec2 aPosition;',
-      'varying vec2 vUv;',
-      'void main(){',
-      'vUv=aPosition*0.5+0.5;',
-      'gl_Position=vec4(aPosition,0.0,1.0);',
-      '}'
-    ].join('\n');
+    const scene=new THREE.Scene();
+    const camera=new THREE.PerspectiveCamera(28,1,.1,100);
+    camera.position.set(0,0,5.25);
 
-    const fragmentSource=[
-      'precision highp float;',
-      'uniform sampler2D uEarth;',
-      'uniform float uYaw;',
-      'uniform float uPitch;',
-      'uniform float uAlpha;',
-      'varying vec2 vUv;',
-      'const float PI=3.141592653589793;',
-      'mat3 rotX(float a){float s=sin(a),c=cos(a);return mat3(1.0,0.0,0.0,0.0,c,-s,0.0,s,c);}',
-      'mat3 rotY(float a){float s=sin(a),c=cos(a);return mat3(c,0.0,s,0.0,1.0,0.0,-s,0.0,c);}',
-      'void main(){',
-      'vec2 p=vUv*2.0-1.0;p.y*=-1.0;',
-      'float r2=dot(p,p);if(r2>1.0)discard;',
-      'float z=sqrt(max(0.0,1.0-r2));',
-      'vec3 n=normalize(vec3(p.x,p.y,z));',
-      'n=rotX(uPitch)*rotY(uYaw)*n;',
-      'float lon=atan(n.z,n.x);',
-      'float lat=asin(clamp(n.y,-1.0,1.0));',
-      'vec2 uv=vec2(lon/(2.0*PI)+0.5,0.5-lat/PI);',
-      'vec3 tex=texture2D(uEarth,uv).rgb;',
-      'vec3 lightDir=normalize(vec3(-0.48,0.20,0.84));',
-      'float diffuse=max(dot(n,lightDir),0.0);',
-      'float day=0.30+0.84*diffuse;',
-      'vec3 viewDir=vec3(0.0,0.0,1.0);',
-      'float rim=pow(1.0-max(dot(n,viewDir),0.0),2.3);',
-      'float spec=pow(max(dot(reflect(-lightDir,n),viewDir),0.0),22.0);',
-      'vec3 color=tex*day;',
-      'color+=vec3(0.18,0.40,0.55)*rim*0.28;',
-      'color+=vec3(1.0,0.72,0.38)*spec*0.12;',
-      'float edge=pow(max(0.0,1.0-r2),0.12);',
-      'gl_FragColor=vec4(color,uAlpha*edge);',
-      '}'
-    ].join('\n');
+    // Soft daylight, plus a cool rim that gives the Earth the polished Maps-style edge.
+    scene.add(new THREE.AmbientLight(0x718693,.55));
+    const sun=new THREE.DirectionalLight(0xffead0,2.7);
+    sun.position.set(-3.8,1.7,4.5);
+    scene.add(sun);
+    const rim=new THREE.DirectionalLight(0x5b91ad,.55);
+    rim.position.set(4,-1,-3);
+    scene.add(rim);
 
-    const compile=(type,source)=>{
-      const shader=gl.createShader(type);
-      gl.shaderSource(shader,source);
-      gl.compileShader(shader);
-      if(!gl.getShaderParameter(shader,gl.COMPILE_STATUS)){console.error(gl.getShaderInfoLog(shader));return null;}
-      return shader;
-    };
-    const vs=compile(gl.VERTEX_SHADER,vertexSource);
-    const fs=compile(gl.FRAGMENT_SHADER,fragmentSource);
-    if(!vs||!fs)return;
+    const earthGroup=new THREE.Group();
+    scene.add(earthGroup);
 
-    const program=gl.createProgram();
-    gl.attachShader(program,vs);gl.attachShader(program,fs);gl.linkProgram(program);
-    if(!gl.getProgramParameter(program,gl.LINK_STATUS)){console.error(gl.getProgramInfoLog(program));return;}
-    gl.useProgram(program);
+    const radius=2.05;
+    const loader=new THREE.TextureLoader();
+    loader.setCrossOrigin('anonymous');
 
-    const buffer=gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER,buffer);
-    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]),gl.STATIC_DRAW);
-    const pos=gl.getAttribLocation(program,'aPosition');
-    gl.enableVertexAttribArray(pos);
-    gl.vertexAttribPointer(pos,2,gl.FLOAT,false,0,0);
+    const earthMap=loader.load(
+      'https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_atmos_2048.jpg'
+    );
+    earthMap.colorSpace=THREE.SRGBColorSpace;
 
-    const yawLoc=gl.getUniformLocation(program,'uYaw');
-    const pitchLoc=gl.getUniformLocation(program,'uPitch');
-    const alphaLoc=gl.getUniformLocation(program,'uAlpha');
-    const texLoc=gl.getUniformLocation(program,'uEarth');
+    const normalMap=loader.load(
+      'https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_normal_2048.jpg'
+    );
+    const specularMap=loader.load(
+      'https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_specular_2048.jpg'
+    );
 
-    const texture=gl.createTexture();
-    gl.bindTexture(gl.TEXTURE_2D,texture);
-    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.REPEAT);
-    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
-    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,2,2,0,gl.RGBA,gl.UNSIGNED_BYTE,new Uint8Array([8,18,27,255,20,52,62,255,20,52,62,255,8,18,27,255]));
+    const earth=new THREE.Mesh(
+      new THREE.SphereGeometry(radius,128,128),
+      new THREE.MeshPhongMaterial({
+        map:earthMap,
+        normalMap:normalMap,
+        normalScale:new THREE.Vector2(.48,.48),
+        specularMap:specularMap,
+        specular:new THREE.Color(0x6c7e86),
+        shininess:20
+      })
+    );
+    earthGroup.add(earth);
 
-    const earth=new Image();
-    earth.crossOrigin='anonymous';
-    earth.onload=()=>{
-      gl.bindTexture(gl.TEXTURE_2D,texture);
-      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);
-      gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,earth);
-    };
-    earth.src='https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_atmos_2048.jpg';
+    // Thin cloud layer gives the globe the soft depth of a modern map globe.
+    const clouds=loader.load(
+      'https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_clouds_1024.png'
+    );
+    const cloudMesh=new THREE.Mesh(
+      new THREE.SphereGeometry(radius*1.012,96,96),
+      new THREE.MeshPhongMaterial({
+        map:clouds,
+        transparent:true,
+        opacity:.22,
+        depthWrite:false,
+        blending:THREE.NormalBlending
+      })
+    );
+    earthGroup.add(cloudMesh);
 
-    let yaw=.35,pitch=-.12,targetYaw=yaw,targetPitch=pitch;
-    let scrollSpeed=.00018,lastX=null,lastY=null,pointerActive=false;
+    // Subtle atmosphere, not a visible border or card.
+    const atmosphere=new THREE.Mesh(
+      new THREE.SphereGeometry(radius*1.045,96,96),
+      new THREE.MeshBasicMaterial({
+        color:0x72a9bf,
+        transparent:true,
+        opacity:.075,
+        side:THREE.BackSide,
+        blending:THREE.AdditiveBlending,
+        depthWrite:false
+      })
+    );
+    earthGroup.add(atmosphere);
+
+    let yaw=.42;
+    let pitch=-.10;
+    let targetYaw=yaw;
+    let targetPitch=pitch;
+    let lastX=null;
+    let lastY=null;
+    let pointerActive=false;
+    let scrollSpeed=.00013;
     const reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 
     const updateScrollSpeed=()=>{
       const r=heroEl.getBoundingClientRect();
       const p=clamp((innerHeight-r.top)/(innerHeight+r.height),0,1);
-      scrollSpeed=.00012+p*.00058;
+      scrollSpeed=.00010+p*.00048;
     };
     addEventListener('scroll',updateScrollSpeed,{passive:true});
     updateScrollSpeed();
 
+    // Cursor movement anywhere across the hero rotates the Earth.
     heroEl.addEventListener('pointermove',e=>{
       const r=heroEl.getBoundingClientRect();
-      const nx=e.clientX/r.width-.5,ny=e.clientY/r.height-.5;
-      if(lastX!==null){targetYaw+=(e.clientX-lastX)*.006;targetPitch=clamp(targetPitch-(e.clientY-lastY)*.003,-.5,.5);}
-      lastX=e.clientX;lastY=e.clientY;pointerActive=true;
-      globeCanvas.style.transform='translate3d(0,0,0) rotateX('+(ny*-1.2)+'deg) rotateY('+(nx*1.6)+'deg)';
+      const nx=e.clientX/r.width-.5;
+      const ny=e.clientY/r.height-.5;
+
+      if(lastX!==null){
+        targetYaw+=(e.clientX-lastX)*.0055;
+        targetPitch=clamp(targetPitch-(e.clientY-lastY)*.0028,-.48,.48);
+      }
+      lastX=e.clientX;
+      lastY=e.clientY;
+      pointerActive=true;
+
+      globeCanvas.style.transform=
+        'translate3d(0,0,0) rotateX('+(ny*-1.15)+'deg) rotateY('+(nx*1.35)+'deg)';
     });
-    heroEl.addEventListener('pointerleave',()=>{lastX=null;lastY=null;pointerActive=false;globeCanvas.style.transform='translate3d(0,0,0)';});
+
+    heroEl.addEventListener('pointerleave',()=>{
+      lastX=null;
+      lastY=null;
+      pointerActive=false;
+      globeCanvas.style.transform='translate3d(0,0,0)';
+    });
 
     const resize=()=>{
-      const rect=globeCanvas.getBoundingClientRect(),dpr=Math.min(devicePixelRatio||1,2);
-      const w=Math.max(1,Math.floor(rect.width*dpr)),h=Math.max(1,Math.floor(rect.height*dpr));
-      if(globeCanvas.width!==w||globeCanvas.height!==h){globeCanvas.width=w;globeCanvas.height=h;gl.viewport(0,0,w,h);}
+      const rect=globeCanvas.getBoundingClientRect();
+      const w=Math.max(1,rect.width);
+      const h=Math.max(1,rect.height);
+      renderer.setSize(w,h,false);
+      camera.aspect=w/h;
+      camera.updateProjectionMatrix();
     };
-    addEventListener('resize',resize);resize();
+    addEventListener('resize',resize);
+    resize();
 
-    const render=()=>{
-      requestAnimationFrame(render);
-      if(!reduced&&!pointerActive)targetYaw+=scrollSpeed;
-      yaw+=(targetYaw-yaw)*.085;pitch+=(targetPitch-pitch)*.085;
-      gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);gl.useProgram(program);
-      gl.uniform1f(yawLoc,yaw);gl.uniform1f(pitchLoc,pitch);gl.uniform1f(alphaLoc,.92);
-      gl.uniform1i(texLoc,0);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,texture);
-      gl.drawArrays(gl.TRIANGLES,0,6);
+    const clock=new THREE.Clock();
+
+    const animate=()=>{
+      requestAnimationFrame(animate);
+
+      if(!reduced&&!pointerActive){
+        targetYaw+=scrollSpeed;
+      }
+
+      yaw+=(targetYaw-yaw)*.065;
+      pitch+=(targetPitch-pitch)*.065;
+
+      earthGroup.rotation.y=yaw;
+      earthGroup.rotation.x=pitch;
+
+      // Clouds drift slightly differently from the surface for depth.
+      clouds.offset.x=(clock.getElapsedTime()*.00035)%1;
+      cloudMesh.rotation.y=yaw*1.006;
+      cloudMesh.rotation.x=pitch*.995;
+
+      renderer.render(scene,camera);
     };
-    render();
-  })();
+
+    animate();
+  }).catch(err=>{
+    console.error('Earth renderer failed:',err);
+  });
 }
+
 document.querySelectorAll('.card,.prod,.step').forEach(card=>{
   card.addEventListener('mousemove',e=>{
     if(innerWidth<900)return;
