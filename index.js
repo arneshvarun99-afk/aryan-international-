@@ -68,22 +68,22 @@ if(heroEl && globeCanvas){
     renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));
     renderer.outputColorSpace=THREE.SRGBColorSpace;
     renderer.toneMapping=THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure=0.95;
+    renderer.toneMappingExposure=.92;
 
     const scene=new THREE.Scene();
     const camera=new THREE.PerspectiveCamera(28,1,.1,100);
     camera.position.set(0,0,5.35);
 
-    // The screenshot-like look: one photographic Earth texture, soft light, soft edge.
-    scene.add(new THREE.AmbientLight(0x8a98a1,.68));
+    // Dark-space lighting with one warm daylight source.
+    scene.add(new THREE.AmbientLight(0x70808a,.48));
 
-    const key=new THREE.DirectionalLight(0xffead0,2.35);
-    key.position.set(-3.8,1.8,4.6);
-    scene.add(key);
+    const sun=new THREE.DirectionalLight(0xffead0,2.55);
+    sun.position.set(-3.8,1.9,4.8);
+    scene.add(sun);
 
-    const coolFill=new THREE.DirectionalLight(0x5b7788,.26);
-    coolFill.position.set(4,-1,-3);
-    scene.add(coolFill);
+    const rimLight=new THREE.DirectionalLight(0x4b8197,.48);
+    rimLight.position.set(4,-1.5,-3.2);
+    scene.add(rimLight);
 
     const earthGroup=new THREE.Group();
     scene.add(earthGroup);
@@ -92,28 +92,39 @@ if(heroEl && globeCanvas){
     const loader=new THREE.TextureLoader();
     loader.setCrossOrigin('anonymous');
 
-    const earthTexture=loader.load(
+    const earthMap=loader.load(
       'https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_atmos_2048.jpg'
     );
-    earthTexture.colorSpace=THREE.SRGBColorSpace;
+    earthMap.colorSpace=THREE.SRGBColorSpace;
+
+    const normalMap=loader.load(
+      'https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_normal_2048.jpg'
+    );
+
+    const specularMap=loader.load(
+      'https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_specular_2048.jpg'
+    );
 
     const earth=new THREE.Mesh(
-      new THREE.SphereGeometry(radius,128,128),
+      new THREE.SphereGeometry(radius,144,144),
       new THREE.MeshPhongMaterial({
-        map:earthTexture,
-        shininess:3,
-        specular:new THREE.Color(0x273640)
+        map:earthMap,
+        normalMap,
+        normalScale:new THREE.Vector2(.52,.52),
+        specularMap,
+        specular:new THREE.Color(0x637782),
+        shininess:16
       })
     );
     earthGroup.add(earth);
 
-    // Very subtle atmosphere to soften the edge like the reference.
+    // Thin atmospheric shell for the space-edge glow.
     const atmosphere=new THREE.Mesh(
-      new THREE.SphereGeometry(radius*1.025,96,96),
+      new THREE.SphereGeometry(radius*1.035,112,112),
       new THREE.MeshBasicMaterial({
-        color:0x84aebd,
+        color:0x73a7bb,
         transparent:true,
-        opacity:.055,
+        opacity:.07,
         side:THREE.BackSide,
         blending:THREE.AdditiveBlending,
         depthWrite:false
@@ -121,51 +132,72 @@ if(heroEl && globeCanvas){
     );
     earthGroup.add(atmosphere);
 
+    // Soft cloud veil, kept subtle so the geography stays sharp.
+    const cloudMap=loader.load(
+      'https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_clouds_1024.png'
+    );
+    const clouds=new THREE.Mesh(
+      new THREE.SphereGeometry(radius*1.012,112,112),
+      new THREE.MeshPhongMaterial({
+        map:cloudMap,
+        transparent:true,
+        opacity:.12,
+        depthWrite:false
+      })
+    );
+    earthGroup.add(clouds);
+
     let yaw=.52;
-    let pitch=-.12;
+    let pitch=-.11;
     let targetYaw=yaw;
     let targetPitch=pitch;
     let lastX=null;
     let lastY=null;
-    let pointerActive=false;
-    let scrollSpeed=.00011;
+    let dragging=false;
+    let interactionStrength=.0;
 
-    const reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 
-    const updateScrollSpeed=()=>{
-      const r=heroEl.getBoundingClientRect();
-      const p=clamp((innerHeight-r.top)/(innerHeight+r.height),0,1);
-      scrollSpeed=.00009+p*.00042;
-    };
-    addEventListener('scroll',updateScrollSpeed,{passive:true});
-    updateScrollSpeed();
+    // No automatic globe animation. It only moves in response to the pointer.
+    heroEl.addEventListener('pointerdown',e=>{
+      dragging=true;
+      lastX=e.clientX;
+      lastY=e.clientY;
+      interactionStrength=1;
+    });
 
-    // Whole-hero cursor interaction, including when the pointer is over the headline.
     heroEl.addEventListener('pointermove',e=>{
       const r=heroEl.getBoundingClientRect();
       const nx=e.clientX/r.width-.5;
       const ny=e.clientY/r.height-.5;
 
       if(lastX!==null){
-        targetYaw+=(e.clientX-lastX)*.0048;
-        targetPitch=clamp(targetPitch-(e.clientY-lastY)*.0024,-.46,.46);
+        const dx=e.clientX-lastX;
+        const dy=e.clientY-lastY;
+        targetYaw+=dx*.006;
+        targetPitch=clamp(targetPitch-dy*.003,-.48,.48);
       }
 
       lastX=e.clientX;
       lastY=e.clientY;
-      pointerActive=true;
+      interactionStrength=1;
 
+      // Tiny perspective tilt follows the cursor without changing the globe's position.
       globeCanvas.style.transform=
-        'translate3d(0,0,0) rotateX('+(ny*-0.9)+'deg) rotateY('+(nx*1.1)+'deg)';
+        'translate3d(0,0,0) rotateX('+(ny*-1.0)+'deg) rotateY('+(nx*1.15)+'deg)';
     });
 
-    heroEl.addEventListener('pointerleave',()=>{
+    const release=()=>{
+      dragging=false;
       lastX=null;
       lastY=null;
-      pointerActive=false;
+      interactionStrength=0;
       globeCanvas.style.transform='translate3d(0,0,0)';
-    });
+    };
+
+    heroEl.addEventListener('pointerup',release);
+    heroEl.addEventListener('pointercancel',release);
+    heroEl.addEventListener('pointerleave',release);
 
     const resize=()=>{
       const rect=globeCanvas.getBoundingClientRect();
@@ -179,29 +211,27 @@ if(heroEl && globeCanvas){
     addEventListener('resize',resize);
     resize();
 
-    const clock=new THREE.Clock();
-
     const animate=()=>{
       requestAnimationFrame(animate);
 
-      if(!reduced&&!pointerActive){
-        targetYaw+=scrollSpeed;
-      }
-
-      yaw+=(targetYaw-yaw)*.065;
-      pitch+=(targetPitch-pitch)*.065;
+      // Smoothly settle after a cursor gesture. No idle rotation.
+      yaw+=(targetYaw-yaw)*.075;
+      pitch+=(targetPitch-pitch)*.075;
 
       earthGroup.rotation.y=yaw;
       earthGroup.rotation.x=pitch;
 
-      // Tiny vertical float keeps it alive without making it look like a toy.
-      earthGroup.position.y=Math.sin(clock.getElapsedTime()*.42)*.012;
+      // Clouds drift only when the user is actively interacting with the globe.
+      if(interactionStrength>0 && dragging){
+        clouds.rotation.y=yaw*1.008;
+        clouds.rotation.x=pitch*.998;
+      }
 
       renderer.render(scene,camera);
     };
 
     animate();
-  }).catch(err=>console.error('Earth renderer failed:',err));
+  }).catch(err=>console.error('3D Earth renderer failed:',err));
 }
 
 document.querySelectorAll('.card,.prod,.step').forEach(card=>{
