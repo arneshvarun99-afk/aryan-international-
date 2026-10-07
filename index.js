@@ -68,76 +68,52 @@ if(heroEl && globeCanvas){
     renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));
     renderer.outputColorSpace=THREE.SRGBColorSpace;
     renderer.toneMapping=THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure=1.05;
+    renderer.toneMappingExposure=0.95;
 
     const scene=new THREE.Scene();
     const camera=new THREE.PerspectiveCamera(28,1,.1,100);
-    camera.position.set(0,0,5.25);
+    camera.position.set(0,0,5.35);
 
-    // Soft daylight, plus a cool rim that gives the Earth the polished Maps-style edge.
-    scene.add(new THREE.AmbientLight(0x718693,.55));
-    const sun=new THREE.DirectionalLight(0xffead0,2.7);
-    sun.position.set(-3.8,1.7,4.5);
-    scene.add(sun);
-    const rim=new THREE.DirectionalLight(0x5b91ad,.55);
-    rim.position.set(4,-1,-3);
-    scene.add(rim);
+    // The screenshot-like look: one photographic Earth texture, soft light, soft edge.
+    scene.add(new THREE.AmbientLight(0x8a98a1,.68));
+
+    const key=new THREE.DirectionalLight(0xffead0,2.35);
+    key.position.set(-3.8,1.8,4.6);
+    scene.add(key);
+
+    const coolFill=new THREE.DirectionalLight(0x5b7788,.26);
+    coolFill.position.set(4,-1,-3);
+    scene.add(coolFill);
 
     const earthGroup=new THREE.Group();
     scene.add(earthGroup);
 
-    const radius=2.05;
+    const radius=2.08;
     const loader=new THREE.TextureLoader();
     loader.setCrossOrigin('anonymous');
 
-    const earthMap=loader.load(
+    const earthTexture=loader.load(
       'https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_atmos_2048.jpg'
     );
-    earthMap.colorSpace=THREE.SRGBColorSpace;
-
-    const normalMap=loader.load(
-      'https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_normal_2048.jpg'
-    );
-    const specularMap=loader.load(
-      'https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_specular_2048.jpg'
-    );
+    earthTexture.colorSpace=THREE.SRGBColorSpace;
 
     const earth=new THREE.Mesh(
       new THREE.SphereGeometry(radius,128,128),
       new THREE.MeshPhongMaterial({
-        map:earthMap,
-        normalMap:normalMap,
-        normalScale:new THREE.Vector2(.48,.48),
-        specularMap:specularMap,
-        specular:new THREE.Color(0x6c7e86),
-        shininess:20
+        map:earthTexture,
+        shininess:3,
+        specular:new THREE.Color(0x273640)
       })
     );
     earthGroup.add(earth);
 
-    // Thin cloud layer gives the globe the soft depth of a modern map globe.
-    const clouds=loader.load(
-      'https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_clouds_1024.png'
-    );
-    const cloudMesh=new THREE.Mesh(
-      new THREE.SphereGeometry(radius*1.012,96,96),
-      new THREE.MeshPhongMaterial({
-        map:clouds,
-        transparent:true,
-        opacity:.22,
-        depthWrite:false,
-        blending:THREE.NormalBlending
-      })
-    );
-    earthGroup.add(cloudMesh);
-
-    // Subtle atmosphere, not a visible border or card.
+    // Very subtle atmosphere to soften the edge like the reference.
     const atmosphere=new THREE.Mesh(
-      new THREE.SphereGeometry(radius*1.045,96,96),
+      new THREE.SphereGeometry(radius*1.025,96,96),
       new THREE.MeshBasicMaterial({
-        color:0x72a9bf,
+        color:0x84aebd,
         transparent:true,
-        opacity:.075,
+        opacity:.055,
         side:THREE.BackSide,
         blending:THREE.AdditiveBlending,
         depthWrite:false
@@ -145,41 +121,43 @@ if(heroEl && globeCanvas){
     );
     earthGroup.add(atmosphere);
 
-    let yaw=.42;
-    let pitch=-.10;
+    let yaw=.52;
+    let pitch=-.12;
     let targetYaw=yaw;
     let targetPitch=pitch;
     let lastX=null;
     let lastY=null;
     let pointerActive=false;
-    let scrollSpeed=.00013;
+    let scrollSpeed=.00011;
+
     const reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 
     const updateScrollSpeed=()=>{
       const r=heroEl.getBoundingClientRect();
       const p=clamp((innerHeight-r.top)/(innerHeight+r.height),0,1);
-      scrollSpeed=.00010+p*.00048;
+      scrollSpeed=.00009+p*.00042;
     };
     addEventListener('scroll',updateScrollSpeed,{passive:true});
     updateScrollSpeed();
 
-    // Cursor movement anywhere across the hero rotates the Earth.
+    // Whole-hero cursor interaction, including when the pointer is over the headline.
     heroEl.addEventListener('pointermove',e=>{
       const r=heroEl.getBoundingClientRect();
       const nx=e.clientX/r.width-.5;
       const ny=e.clientY/r.height-.5;
 
       if(lastX!==null){
-        targetYaw+=(e.clientX-lastX)*.0055;
-        targetPitch=clamp(targetPitch-(e.clientY-lastY)*.0028,-.48,.48);
+        targetYaw+=(e.clientX-lastX)*.0048;
+        targetPitch=clamp(targetPitch-(e.clientY-lastY)*.0024,-.46,.46);
       }
+
       lastX=e.clientX;
       lastY=e.clientY;
       pointerActive=true;
 
       globeCanvas.style.transform=
-        'translate3d(0,0,0) rotateX('+(ny*-1.15)+'deg) rotateY('+(nx*1.35)+'deg)';
+        'translate3d(0,0,0) rotateX('+(ny*-0.9)+'deg) rotateY('+(nx*1.1)+'deg)';
     });
 
     heroEl.addEventListener('pointerleave',()=>{
@@ -197,6 +175,7 @@ if(heroEl && globeCanvas){
       camera.aspect=w/h;
       camera.updateProjectionMatrix();
     };
+
     addEventListener('resize',resize);
     resize();
 
@@ -215,18 +194,14 @@ if(heroEl && globeCanvas){
       earthGroup.rotation.y=yaw;
       earthGroup.rotation.x=pitch;
 
-      // Clouds drift slightly differently from the surface for depth.
-      clouds.offset.x=(clock.getElapsedTime()*.00035)%1;
-      cloudMesh.rotation.y=yaw*1.006;
-      cloudMesh.rotation.x=pitch*.995;
+      // Tiny vertical float keeps it alive without making it look like a toy.
+      earthGroup.position.y=Math.sin(clock.getElapsedTime()*.42)*.012;
 
       renderer.render(scene,camera);
     };
 
     animate();
-  }).catch(err=>{
-    console.error('Earth renderer failed:',err);
-  });
+  }).catch(err=>console.error('Earth renderer failed:',err));
 }
 
 document.querySelectorAll('.card,.prod,.step').forEach(card=>{
