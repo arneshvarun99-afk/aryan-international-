@@ -54,124 +54,71 @@ addEventListener('scroll',brandScroll,{passive:true});brandScroll();
 
 
 const globeStage=document.getElementById('globeStage');
-const globeCanvas=document.getElementById('globeCanvas');
+const globeStrip=document.getElementById('globeStrip');
+const heroEl=document.querySelector('.hero');
 
-if(globeStage && globeCanvas){
-  (async()=>{
-    try{
-      const THREE=await import('https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js');
-      const renderer=new THREE.WebGLRenderer({canvas:globeCanvas,alpha:true,antialias:true,powerPreference:'high-performance'});
-      renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));
-      renderer.outputColorSpace=THREE.SRGBColorSpace;
-      renderer.toneMapping=THREE.ACESFilmicToneMapping;
-      renderer.toneMappingExposure=1.05;
+if(globeStage && globeStrip){
+  let rotation=0;
+  let targetRotation=0;
+  let scrollSpeed=.055;
+  let lastX=null;
+  let hovering=false;
+  let tiltX=0,tiltY=0,targetTiltX=0,targetTiltY=0;
+  const reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 
-      const scene=new THREE.Scene();
-      const camera=new THREE.PerspectiveCamera(34,1,.1,100);
-      camera.position.set(0,0,5.3);
+  const updateSpeed=()=>{
+    if(!heroEl)return;
+    const r=heroEl.getBoundingClientRect();
+    const progress=clamp((innerHeight-r.top)/(innerHeight+r.height),0,1);
+    scrollSpeed=.035 + progress*.11;
+  };
+  addEventListener('scroll',updateSpeed,{passive:true});
+  updateSpeed();
 
-      scene.add(new THREE.AmbientLight(0x738a96,.52));
-      const key=new THREE.DirectionalLight(0xfff0d8,2.45);
-      key.position.set(-3.5,1.5,4);
-      scene.add(key);
-      const fill=new THREE.DirectionalLight(0x47788f,.34);
-      fill.position.set(4,0,-2);
-      scene.add(fill);
+  globeStage.addEventListener('pointerenter',e=>{
+    hovering=true;
+    lastX=e.clientX;
+  });
 
-      const globeGroup=new THREE.Group();
-      scene.add(globeGroup);
-
-      const radius=2.08;
-      const textureLoader=new THREE.TextureLoader();
-      const earthTexture=textureLoader.load('https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_atmos_2048.jpg');
-      earthTexture.colorSpace=THREE.SRGBColorSpace;
-      const earthNormal=textureLoader.load('https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_normal_2048.jpg');
-      const earthSpecular=textureLoader.load('https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_specular_2048.jpg');
-
-      const earth=new THREE.Mesh(
-        new THREE.SphereGeometry(radius,128,128),
-        new THREE.MeshPhongMaterial({
-          map:earthTexture,
-          normalMap:earthNormal,
-          normalScale:new THREE.Vector2(.65,.65),
-          specularMap:earthSpecular,
-          specular:new THREE.Color(0x5d7280),
-          shininess:18
-        })
-      );
-      globeGroup.add(earth);
-
-      const atmosphere=new THREE.Mesh(
-        new THREE.SphereGeometry(radius*1.04,64,64),
-        new THREE.MeshBasicMaterial({
-          color:0x5f9fba,
-          transparent:true,
-          opacity:.075,
-          side:THREE.BackSide,
-          blending:THREE.AdditiveBlending
-        })
-      );
-      globeGroup.add(atmosphere);
-
-      let yaw=.55,pitch=-.12,targetYaw=yaw,targetPitch=pitch;
-      let lastX=null,lastY=null,hovering=false;
-      let scrollSpeed=0.00016;
-      const heroEl=document.querySelector('.hero');
-      const reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
-
-      globeStage.addEventListener('pointerenter',e=>{
-        hovering=true;
-        lastX=e.clientX;lastY=e.clientY;
-      });
-
-      addEventListener('scroll',()=>{
-        if(!heroEl)return;
-        const r=heroEl.getBoundingClientRect();
-        const progress=clamp((innerHeight-r.top)/(innerHeight+r.height),0,1);
-        // As the page scrolls through the hero, the globe gradually accelerates.
-        scrollSpeed=0.00016 + progress*0.00115;
-      },{passive:true});
-      globeStage.addEventListener('pointermove',e=>{
-        const r=globeStage.getBoundingClientRect();
-        const nx=e.clientX/r.width-.5,ny=e.clientY/r.height-.5;
-        if(lastX!==null){
-          targetYaw+=(e.clientX-lastX)*.0065;
-          targetPitch=clamp(targetPitch-(e.clientY-lastY)*.0045,-.62,.62);
-        }
-        lastX=e.clientX;lastY=e.clientY;
-        globeCanvas.style.transform=`rotateX(${ny*-2.2}deg) rotateY(${nx*2.8}deg)`;
-      });
-      globeStage.addEventListener('pointerleave',()=>{
-        hovering=false;lastX=null;lastY=null;globeCanvas.style.transform='';
-      });
-
-      function resize(){
-        const rect=globeCanvas.getBoundingClientRect();
-        const w=Math.max(1,rect.width),h=Math.max(1,rect.height);
-        renderer.setSize(w,h,false);
-        camera.aspect=w/h;
-        camera.updateProjectionMatrix();
-      }
-      addEventListener('resize',resize);
-      resize();
-
-      const clock=new THREE.Clock();
-      function render(){
-        requestAnimationFrame(render);
-        if(!reduced&&!hovering)targetYaw+=scrollSpeed;
-        yaw+=(targetYaw-yaw)*.075;
-        pitch+=(targetPitch-pitch)*.075;
-        globeGroup.rotation.y=yaw;
-        globeGroup.rotation.x=pitch;
-        globeGroup.position.y=Math.sin(clock.getElapsedTime()*.65)*.018;
-        renderer.render(scene,camera);
-      }
-      render();
-    }catch(err){
-      console.error('Interactive globe failed:',err);
+  globeStage.addEventListener('pointermove',e=>{
+    const r=globeStage.getBoundingClientRect();
+    const nx=e.clientX/r.width-.5;
+    const ny=e.clientY/r.height-.5;
+    if(lastX!==null){
+      targetRotation += (e.clientX-lastX)*.18;
     }
-  })();
+    lastX=e.clientX;
+    targetTiltX=clamp(-ny*7,-5,5);
+    targetTiltY=clamp(nx*9,-7,7);
+  });
+
+  globeStage.addEventListener('pointerleave',()=>{
+    hovering=false;
+    lastX=null;
+    targetTiltX=0;
+    targetTiltY=0;
+  });
+
+  let raf;
+  const renderGlobe=()=>{
+    raf=requestAnimationFrame(renderGlobe);
+
+    if(!reduced && !hovering){
+      rotation += scrollSpeed;
+    }
+
+    rotation += (targetRotation-rotation)*.04;
+    targetRotation = rotation;
+
+    tiltX += (targetTiltX-tiltX)*.08;
+    tiltY += (targetTiltY-tiltY)*.08;
+
+    // Three identical maps make a seamless scrolling longitude loop.
+    const shift=((rotation % 33.333333)+33.333333)%33.333333;
+    globeStrip.style.transform=`translate3d(-${shift}%,0,0) rotateX(${tiltX*.25}deg) rotateY(${tiltY*.18}deg)`;
+  };
+  renderGlobe();
 }
 
 document.querySelectorAll('.card,.prod,.step').forEach(card=>{
