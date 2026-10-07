@@ -198,6 +198,42 @@ body{background:#f4f4ef;color:#111}
  .prodGrid{grid-template-columns:1fr}
 }
 
+/* Aryan palette + high-motion editorial layer */
+:root{--lime:var(--gold2);--canvas:var(--cream);--dark:var(--navy)}
+body{background:var(--cream);color:#111}
+.nav{background:linear-gradient(180deg,#0d1620f5,#0d1620d9 70%,transparent);color:#fff;mix-blend-mode:normal}
+.nav.scrolled{background:#0d1620e8;color:#fff}
+.brand,.links a{color:#fff}.brand b{color:var(--gold2)}
+.navbtn{background:var(--gold2);color:#111}
+.hero{background:var(--cream);perspective:1000px}
+.heroBg{background:radial-gradient(circle at 84% 20%,#24564c22,transparent 28%)}
+.hero .copy h1{color:#111}
+.hero .copy h1 em{color:var(--gold2);-webkit-text-stroke:1px #111}
+.actions .btn:not(.alt){background:var(--forest);color:#fff;border-color:var(--forest)}
+.actions .btn.alt{color:#111;border-color:#c9c1b5}
+.globeWrap{background:#111 url('garlic.svg') center/cover no-repeat;box-shadow:0 30px 90px #0d162026;transform:translateZ(0);animation:heroFloat 7s ease-in-out infinite}
+.globeWrap:after{content:"";position:absolute;inset:0;background:linear-gradient(130deg,#173b3550,transparent 45%,#c89a5228);pointer-events:none;mix-blend-mode:screen}
+.floatCard{background:#fff;color:#17202a;border:1px solid #ffffff99;box-shadow:0 22px 55px #0003}
+.ticker{background:var(--forest);color:#fff;border-color:var(--forest)}.track span::after{color:var(--gold2)}
+.split .reveal,.process .reveal,.quoteGrid .reveal{clip-path:inset(0 0 24% 0);opacity:0;transform:translateY(50px);transition:clip-path 1s cubic-bezier(.2,.8,.2,1),opacity .8s,transform 1s cubic-bezier(.2,.8,.2,1)}
+.split .reveal.show,.process .reveal.show,.quoteGrid .reveal.show{clip-path:inset(0);opacity:1;transform:none}
+.card{border-radius:14px;background:#fffaf4;box-shadow:0 15px 50px #21180d08}
+.card:hover{box-shadow:0 30px 80px #21180d18}
+.products{background:var(--navy)}.products .lead,.products .h2{color:#fff}
+.products .eyebrow{color:#c7cdd0}.productSearch input{background:#101a23;border-color:#ffffff1c}.productSearch button{background:transparent}
+.prod{border-radius:16px;background:#13232a;transform:translateY(60px);opacity:0;transition:transform .9s cubic-bezier(.2,.8,.2,1),opacity .8s,box-shadow .4s}
+.prod.show{transform:none;opacity:1}
+.prod:nth-child(2){transition-delay:.08s}.prod:nth-child(3){transition-delay:.16s}.prod:nth-child(4){transition-delay:.24s}.prod:nth-child(5){transition-delay:.32s}.prod:nth-child(6){transition-delay:.40s}
+.miniBadge,.goldBadge{background:var(--gold2)!important;color:#111!important;border-color:var(--gold2)!important}
+.prodArrow{transition:transform .35s,background .35s}.prod:hover .prodArrow{background:var(--gold2);color:#111;border-color:var(--gold2)}
+.process{background:var(--forest);color:#fff}.process .h2,.process .step h3,.process .stepNo{color:#fff}.step{border-color:#ffffff24}.step p{color:#bec8c7}.step .line{background:linear-gradient(90deg,var(--gold),var(--gold2))}
+.quote{background:var(--cream)}.form button{background:var(--forest);color:#fff}.footer{background:#0b1218}
+.footer b{color:var(--gold2)}
+@keyframes heroFloat{0%,100%{transform:translateY(0) rotateX(0deg)}50%{transform:translateY(-10px) rotateX(.5deg)}}
+@keyframes revealFlash{0%{box-shadow:0 0 0 0 #c89a5200}50%{box-shadow:0 0 0 10px #c89a5214}100%{box-shadow:0 0 0 0 #c89a5200}}
+.navCta,.navbtn{animation:revealFlash 3.5s ease-in-out infinite}
+@media(prefers-reduced-motion:reduce){.globeWrap,.navCta,.navbtn{animation:none}.split .reveal,.process .reveal,.quoteGrid .reveal{transition:none;clip-path:none;opacity:1;transform:none}.prod{opacity:1;transform:none;transition:none}}
+
 </style>
 <link rel="stylesheet" href="loader.css">
 </head>
