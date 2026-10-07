@@ -294,7 +294,12 @@ function filterProducts(){
   productCards.forEach(card=>{
     const match=!q || card.textContent.toLowerCase().includes(q);
     card.style.display=match?'flex':'none';
-    if(match) visible++;
+    if(match){
+      card.classList.add('show');
+      visible++;
+    }else{
+      card.classList.remove('show');
+    }
   });
   if(productEmpty) productEmpty.style.display=(q && !visible)?'block':'none';
 }
