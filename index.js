@@ -120,3 +120,44 @@ function resetProductTransition(){
   document.querySelectorAll('.productLaunch.launching').forEach(el=>el.classList.remove('launching'));
 }
 addEventListener('pageshow', resetProductTransition);
+
+// Editorial motion inspired by premium athlete/product sites
+const motionReduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const heroVisual=document.querySelector('.globeWrap');
+const heroCopy=document.querySelector('.copy');
+const productCards=[...document.querySelectorAll('.prod')];
+
+if(!motionReduced){
+  addEventListener('scroll',()=>{
+    const y=scrollY;
+    if(heroVisual){
+      const shift=Math.min(45,y*.08);
+      heroVisual.style.transform=`translate3d(0,${-shift}px,0)`;
+    }
+    if(heroCopy){
+      heroCopy.style.transform=`translate3d(0,${Math.min(28,y*.035)}px,0)`;
+    }
+    productCards.forEach((card,i)=>{
+      const r=card.getBoundingClientRect();
+      const center=(innerHeight*.55-r.top)/innerHeight;
+      const yMove=Math.max(-10,Math.min(10,center*7));
+      card.style.setProperty('--scroll-y',yMove+'px');
+    });
+  },{passive:true});
+
+  document.querySelectorAll('.card,.prod,.step').forEach(el=>{
+    el.addEventListener('pointermove',e=>{
+      if(innerWidth<900)return;
+      const r=el.getBoundingClientRect();
+      const x=(e.clientX-r.left)/r.width-.5;
+      const y=(e.clientY-r.top)/r.height-.5;
+      el.style.transform=`perspective(900px) translateY(var(--scroll-y,0)) rotateX(${-y*2.2}deg) rotateY(${x*2.8}deg)`;
+    });
+    el.addEventListener('pointerleave',()=>{
+      el.style.transform='';
+    });
+  });
+}
+
+// Make the first screen feel alive immediately, then let scrolling take over.
+requestAnimationFrame(()=>document.querySelectorAll('.hero .reveal').forEach(el=>el.classList.add('show')));
