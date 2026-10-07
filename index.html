@@ -1065,6 +1065,22 @@ body{background:var(--cream);color:#111}
   #globeStage.globeWrap{top:55%!important;width:140vw!important;height:140vw!important}
   #globeStage .globeCanvas{width:125vw!important;opacity:.58!important}
 }
+/* Final 3D Earth integration */
+#globeStage.globeWrap{
+  pointer-events:auto!important;
+}
+#globeStage .globeCanvas{
+  cursor:grab!important;
+  opacity:.92!important;
+  filter:
+    drop-shadow(0 26px 85px rgba(0,0,0,.38))
+    drop-shadow(0 0 58px rgba(83,145,167,.15))!important;
+}
+#globeStage:active .globeCanvas{cursor:grabbing!important}
+#globeStage .globeAura{
+  background:radial-gradient(circle,rgba(60,111,132,.16) 0%,rgba(60,111,132,.055) 43%,transparent 71%)!important;
+}
+
 </style>
 </head>
 <body><div class="noise"></div><div class="progress" id="progress"></div>
@@ -1136,6 +1152,6 @@ body{background:var(--cream);color:#111}
 <form class="form reveal" action="https://formsubmit.co/aryaninternational00@gmail.com" method="POST"><input type="hidden" name="_next" value="https://arneshvarun99-afk.github.io/aryan-international-/thank-you.html"><input type="hidden" name="_subject" value="New Aryan International Buyer RFQ"><input type="hidden" name="_captcha" value="false"><input type="hidden" name="_template" value="table"><h3>Start your enquiry</h3><p class="muted" style="margin-top:5px">We'll prepare an email with your requirement.</p><input name="name" id="name" required placeholder="Name / company"><input name="email" id="email" type="email" required placeholder="Business email"><input name="country" id="country" required placeholder="Country"><input name="product" id="product" required placeholder="Product"><input name="quantity" id="qty" placeholder="Estimated quantity"><textarea name="details" id="details" placeholder="Specifications, packaging, target price, delivery destination..."></textarea><button type="submit">SEND BUYER ENQUIRY →</button></form></div></section>
 
 <footer class="footer">© 2026 <b>Aryan International</b> · India · aryaninternational00@gmail.com · +91 96776 41402</footer>
-<script src="index.js?v=202610071020"></script>
+<script src="index.js?v=202610071058"></script>
 </body>
 </html>
