@@ -115,6 +115,8 @@ if(globeStage && globeCanvas){
 
       let yaw=.55,pitch=-.12,targetYaw=yaw,targetPitch=pitch;
       let lastX=null,lastY=null,hovering=false;
+      let scrollSpeed=0.00016;
+      const heroEl=document.querySelector('.hero');
       const reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 
@@ -122,6 +124,14 @@ if(globeStage && globeCanvas){
         hovering=true;
         lastX=e.clientX;lastY=e.clientY;
       });
+
+      addEventListener('scroll',()=>{
+        if(!heroEl)return;
+        const r=heroEl.getBoundingClientRect();
+        const progress=clamp((innerHeight-r.top)/(innerHeight+r.height),0,1);
+        // As the page scrolls through the hero, the globe gradually accelerates.
+        scrollSpeed=0.00016 + progress*0.00115;
+      },{passive:true});
       globeStage.addEventListener('pointermove',e=>{
         const r=globeStage.getBoundingClientRect();
         const nx=e.clientX/r.width-.5,ny=e.clientY/r.height-.5;
@@ -149,7 +159,7 @@ if(globeStage && globeCanvas){
       const clock=new THREE.Clock();
       function render(){
         requestAnimationFrame(render);
-        if(!reduced&&!hovering)targetYaw+=.00016;
+        if(!reduced&&!hovering)targetYaw+=scrollSpeed;
         yaw+=(targetYaw-yaw)*.075;
         pitch+=(targetPitch-pitch)*.075;
         globeGroup.rotation.y=yaw;
