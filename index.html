@@ -298,41 +298,58 @@ function resetProductTransition(){
 }
 addEventListener('pageshow', resetProductTransition);
 
-function sendMail(e){
+async function sendMail(e){
   e.preventDefault();
 
-  const nameVal = document.getElementById('name').value.trim();
-  const emailVal = document.getElementById('email').value.trim();
-  const countryVal = document.getElementById('country').value.trim();
-  const productVal = document.getElementById('product').value.trim();
-  const qtyVal = document.getElementById('qty').value.trim();
-  const detailsVal = document.getElementById('details').value.trim();
+  const form = e.target;
+  const btn = form.querySelector('button[type="submit"]');
 
-  const body =
-`Buyer enquiry
+  const payload = {
+    name: document.getElementById('name').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    country: document.getElementById('country').value.trim(),
+    product: document.getElementById('product').value.trim(),
+    quantity: document.getElementById('qty').value.trim(),
+    details: document.getElementById('details').value.trim(),
+    _subject: 'New Aryan International RFQ - ' + document.getElementById('product').value.trim(),
+    _captcha: 'false',
+    _template: 'table'
+  };
 
-Name / company: ${nameVal}
-Email: ${emailVal}
-Country: ${countryVal}
-Product: ${productVal}
-Estimated quantity: ${qtyVal}
-Details: ${detailsVal}`;
-
-  const subject = 'International Buyer Enquiry - ' + productVal;
-  const mailto = 'mailto:aryaninternational00@gmail.com'
-    + '?subject=' + encodeURIComponent(subject)
-    + '&body=' + encodeURIComponent(body);
-
-  const btn = e.target.querySelector('button[type="submit"]');
-  btn.textContent = 'OPENING EMAIL…';
+  const original = btn.textContent;
+  btn.textContent = 'SENDING ENQUIRY…';
   btn.disabled = true;
 
-  window.location.href = mailto;
+  try {
+    const response = await fetch('https://formsubmit.co/ajax/aryaninternational00@gmail.com', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
 
-  setTimeout(() => {
-    btn.textContent = 'SEND BUYER ENQUIRY →';
+    if (!response.ok) throw new Error('Submission failed');
+
+    form.reset();
+    btn.textContent = 'ENQUIRY SENT ✓';
+    
+    const note = document.createElement('p');
+    note.textContent = 'Thank you. Your enquiry has been sent to Aryan International.';
+    note.style.cssText = 'margin:14px 0 0;text-align:center;color:#173b35;font-size:13px;font-weight:600;';
+    form.appendChild(note);
+
+    setTimeout(() => {
+      btn.textContent = original;
+      btn.disabled = false;
+      note.remove();
+    }, 5000);
+  } catch (err) {
+    btn.textContent = 'TRY AGAIN';
     btn.disabled = false;
-  }, 2500);
+    alert('We could not send the enquiry right now. Please email aryaninternational00@gmail.com directly.');
+  }
 }
 </script>
 </body>
