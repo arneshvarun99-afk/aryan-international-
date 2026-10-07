@@ -865,6 +865,125 @@ body{background:var(--cream);color:#111}
   .copy h1{font-size:clamp(62px,17vw,100px)!important;line-height:.78!important}
   .copy .sub{font-size:15px!important}
 }
+/* Space-glitter hero theme */
+.hero{
+  background:
+    radial-gradient(circle at 50% 42%,rgba(68,116,135,.18),transparent 28%),
+    radial-gradient(circle at 50% 58%,rgba(226,192,126,.09),transparent 46%),
+    radial-gradient(circle at 22% 22%,rgba(35,80,94,.15),transparent 24%),
+    #03080e!important;
+  color:#fff!important;
+}
+.heroBg{
+  background:
+    radial-gradient(circle at 50% 47%,rgba(23,59,53,.22),transparent 30%),
+    radial-gradient(circle at 68% 38%,rgba(62,106,124,.11),transparent 26%),
+    linear-gradient(145deg,#02070c 0%,#07121b 48%,#0b151d 100%)!important;
+}
+.hero::before,
+.hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+}
+.hero::before{
+  opacity:.72;
+  background-image:
+    radial-gradient(circle at 8% 18%,rgba(255,255,255,.92) 0 1px,transparent 1.6px),
+    radial-gradient(circle at 17% 63%,rgba(226,192,126,.75) 0 1px,transparent 1.8px),
+    radial-gradient(circle at 28% 28%,rgba(255,255,255,.78) 0 .9px,transparent 1.5px),
+    radial-gradient(circle at 38% 76%,rgba(151,199,215,.70) 0 1px,transparent 1.7px),
+    radial-gradient(circle at 49% 16%,rgba(255,255,255,.82) 0 1px,transparent 1.7px),
+    radial-gradient(circle at 61% 72%,rgba(226,192,126,.70) 0 .9px,transparent 1.6px),
+    radial-gradient(circle at 73% 23%,rgba(255,255,255,.72) 0 1px,transparent 1.7px),
+    radial-gradient(circle at 84% 58%,rgba(137,189,207,.75) 0 1px,transparent 1.7px),
+    radial-gradient(circle at 94% 34%,rgba(255,255,255,.82) 0 1px,transparent 1.6px);
+  background-size:100% 100%;
+  animation:spaceTwinkle 5s ease-in-out infinite alternate;
+}
+.hero::after{
+  opacity:.45;
+  background-image:
+    radial-gradient(circle at 13% 42%,rgba(255,255,255,.85) 0 .7px,transparent 1.4px),
+    radial-gradient(circle at 33% 11%,rgba(226,192,126,.65) 0 .8px,transparent 1.5px),
+    radial-gradient(circle at 56% 34%,rgba(255,255,255,.75) 0 .8px,transparent 1.5px),
+    radial-gradient(circle at 78% 77%,rgba(255,255,255,.70) 0 .8px,transparent 1.5px),
+    radial-gradient(circle at 89% 15%,rgba(160,207,224,.72) 0 .8px,transparent 1.5px);
+  animation:spaceDrift 28s linear infinite;
+}
+@keyframes spaceTwinkle{
+  from{opacity:.38;transform:scale(1)}
+  to{opacity:.86;transform:scale(1.012)}
+}
+@keyframes spaceDrift{
+  from{transform:translate3d(0,0,0)}
+  to{transform:translate3d(-12px,8px,0)}
+}
+.copy{
+  color:#fff!important;
+}
+.copy .eyebrow{
+  color:#e2c07e!important;
+  text-shadow:0 0 18px rgba(226,192,126,.24)!important;
+}
+.copy .eyebrow:before{background:#c89a52!important}
+.copy h1{
+  color:#f5f2eb!important;
+  text-shadow:
+    0 2px 0 rgba(255,255,255,.10),
+    0 10px 36px rgba(0,0,0,.50),
+    0 0 55px rgba(255,255,255,.06)!important;
+}
+.copy h1 em{
+  color:#e2c07e!important;
+  -webkit-text-stroke:1px rgba(255,244,215,.72)!important;
+  text-shadow:
+    0 2px 0 rgba(255,255,255,.12),
+    0 10px 36px rgba(0,0,0,.55),
+    0 0 40px rgba(226,192,126,.18)!important;
+  font-weight:700!important;
+}
+.copy .sub{
+  color:#e2e7e8!important;
+  font-weight:600!important;
+  text-shadow:0 2px 14px rgba(0,0,0,.60)!important;
+}
+.copy .micro{
+  color:#c9d2d5!important;
+  font-weight:700!important;
+  text-shadow:0 2px 12px rgba(0,0,0,.55)!important;
+}
+.copy .micro span:before{color:#e2c07e!important}
+.actions .btn{
+  background:#e2c07e!important;
+  color:#0b1117!important;
+  border:1px solid #e2c07e!important;
+  box-shadow:0 12px 38px rgba(0,0,0,.28);
+}
+.actions .btn.alt{
+  background:rgba(4,10,15,.35)!important;
+  color:#f3f0e8!important;
+  border:1px solid rgba(226,192,126,.56)!important;
+}
+.nav{
+  background:linear-gradient(180deg,rgba(3,8,14,.97),rgba(3,8,14,.78) 72%,transparent)!important;
+}
+.navbtn{
+  background:#e2c07e!important;
+  color:#0b1117!important;
+}
+.ticker{
+  background:#0a151d!important;
+  border-color:#1e343e!important;
+}
+.track{color:#d9e1e3!important;text-shadow:0 1px 10px rgba(0,0,0,.35)!important}
+.track span::after{color:#e2c07e!important}
+@media(prefers-reduced-motion:reduce){
+  .hero::before,.hero::after{animation:none!important}
+}
+
 </style>
 </head>
 <body><div class="noise"></div><div class="progress" id="progress"></div>
