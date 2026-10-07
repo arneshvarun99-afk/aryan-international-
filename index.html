@@ -299,15 +299,7 @@ body{background:var(--cream);color:#111}
   z-index:4;
   mix-blend-mode:screen;
 }
-#globeStage .globeCanvas{
-  width:min(520px,62%);
-  height:auto;
-  aspect-ratio:1;
-  z-index:2;
-  filter:drop-shadow(0 26px 55px #000a);
-  cursor:grab;
-  transition:filter .25s ease,transform .18s ease-out;
-}
+
 #globeStage:hover .globeCanvas{filter:drop-shadow(0 30px 68px #000d)}
 #globeStage.is-grabbing .globeCanvas{cursor:grabbing}
 #globeStage .globeHint{
@@ -318,11 +310,11 @@ body{background:var(--cream);color:#111}
 }
 @media(max-width:900px){
   #globeStage.globeWrap{height:520px;min-height:430px}
-  #globeStage .globeCanvas{width:min(460px,75%)}
+  
 }
 @media(max-width:560px){
   #globeStage.globeWrap{height:430px;min-height:360px}
-  #globeStage .globeCanvas{width:min(390px,84%)}
+  
 }
 
 /* Centered globe editorial hero */
@@ -436,15 +428,7 @@ body{background:var(--cream);color:#111}
   box-shadow:none!important;
   background:none!important;
 }
-#globeStage .globeCanvas{
-  background:transparent!important;
-  border:0!important;
-  outline:0!important;
-  box-shadow:none!important;
-  mix-blend-mode:normal;
-  opacity:.78;
-  filter:drop-shadow(0 18px 48px rgba(0,0,0,.42)) drop-shadow(0 0 36px rgba(91,143,161,.08));
-}
+
 .heroIn{
   overflow:visible!important;
 }
@@ -484,6 +468,85 @@ body{background:var(--cream);color:#111}
   .copy h1{font-size:clamp(58px,16vw,92px)!important;line-height:.80!important}
 }
 /* Final hero composition: giant Earth behind headline */
+/* Reliable cinematic globe background */
+#globeStage.globeWrap{
+  grid-area:1/1!important;
+  width:min(930px,82vw)!important;
+  height:min(930px,82vw)!important;
+  min-height:0!important;
+  display:grid!important;
+  place-items:center!important;
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  overflow:visible!important;
+  z-index:1!important;
+  pointer-events:auto!important;
+}
+#globeStage .globeSphere{
+  position:relative;
+  width:min(790px,74vw);
+  aspect-ratio:1;
+  border-radius:50%;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 35% 28%,#527685 0,#294b5b 18%,#112735 52%,#071019 76%);
+  box-shadow:
+    inset -55px -35px 90px rgba(0,0,0,.72),
+    inset 30px 25px 55px rgba(255,255,255,.08),
+    0 28px 85px rgba(0,0,0,.34),
+    0 0 70px rgba(72,120,137,.13);
+  transform:translateZ(0);
+  isolation:isolate;
+}
+#globeStage .globeStrip{
+  position:absolute;
+  inset:0;
+  width:300%;
+  height:100%;
+  display:flex;
+  will-change:transform;
+}
+#globeStage .globeStrip img{
+  width:33.333333%;
+  height:100%;
+  flex:0 0 33.333333%;
+  object-fit:cover;
+  user-select:none;
+  pointer-events:none;
+  display:block;
+}
+#globeStage .globeShade{
+  position:absolute;
+  inset:-1px;
+  z-index:2;
+  pointer-events:none;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 34% 28%,rgba(255,255,255,.18),transparent 22%),
+    radial-gradient(circle at 73% 52%,rgba(0,0,0,.58),transparent 53%),
+    radial-gradient(circle at 50% 52%,transparent 60%,rgba(0,0,0,.34) 100%);
+  mix-blend-mode:multiply;
+}
+#globeStage .globeEdge{
+  position:absolute;
+  inset:0;
+  z-index:3;
+  pointer-events:none;
+  border-radius:50%;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.05),inset 0 0 70px rgba(4,11,17,.38);
+}
+#globeStage::before,
+#globeStage::after{display:none!important;content:none!important}
+@media(max-width:900px){
+  #globeStage.globeWrap{width:100vw!important;height:100vw!important}
+  #globeStage .globeSphere{width:min(700px,88vw)}
+}
+@media(max-width:560px){
+  #globeStage .globeSphere{width:92vw}
+}
+
 .hero{
   position:relative;
   overflow:hidden;
@@ -519,15 +582,7 @@ body{background:var(--cream);color:#111}
   box-shadow:none!important;
   overflow:visible!important;
 }
-#globeStage .globeCanvas{
-  width:min(840px,74vw)!important;
-  height:auto!important;
-  max-width:none!important;
-  opacity:.82!important;
-  mix-blend-mode:normal!important;
-  filter:drop-shadow(0 24px 70px rgba(0,0,0,.32)) drop-shadow(0 0 46px rgba(102,132,145,.12))!important;
-  transform-origin:center center!important;
-}
+
 .copy{
   grid-area:1/1!important;
   width:min(1180px,94vw)!important;
@@ -598,14 +653,14 @@ body{background:var(--cream);color:#111}
 .nav .brand,.nav .links a{color:#fff!important}
 @media(max-width:900px){
   .heroIn{min-height:calc(100vh - 72px)!important;padding:95px 20px 55px!important}
-  #globeStage .globeCanvas{width:min(700px,92vw)!important;opacity:.68!important}
+  
   .copy{width:96%!important}
   .copy h1{font-size:clamp(78px,14vw,150px)!important}
 }
 @media(max-width:560px){
   .heroIn{min-height:calc(100vh - 64px)!important;padding:82px 16px 42px!important}
   #globeStage.globeWrap{width:100vw!important;height:100vw!important}
-  #globeStage .globeCanvas{width:98vw!important;opacity:.56!important}
+  
   .copy h1{font-size:clamp(62px,16.7vw,96px)!important;line-height:.78!important}
   .hero .sub{font-size:15px!important}
 }
@@ -626,7 +681,7 @@ body{background:var(--cream);color:#111}
 }
 .copy .micro span:before{color:#a9782e!important}
 
-#globeStage .globeCanvas{opacity:.88!important;filter:drop-shadow(0 20px 55px rgba(0,0,0,.34)) drop-shadow(0 0 42px rgba(74,119,135,.10))!important}
+
 /* Stronger navigation + scrolling ticker typography */
 .links{
   font-size:14px!important;
@@ -659,7 +714,15 @@ body{background:var(--cream);color:#111}
 <div class="heroBg"></div><div class="glow"></div>
 <div class="heroIn">
 <div class="globeWrap" id="globeStage" aria-hidden="true">
-<canvas class="globeCanvas" id="globeCanvas" aria-label="Interactive rotating Earth"></canvas>
+  <div class="globeSphere">
+    <div class="globeStrip" id="globeStrip">
+      <img src="https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_atmos_2048.jpg" alt="" draggable="false">
+      <img src="https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_atmos_2048.jpg" alt="" draggable="false">
+      <img src="https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_atmos_2048.jpg" alt="" draggable="false">
+    </div>
+    <div class="globeShade"></div>
+    <div class="globeEdge"></div>
+  </div>
 </div>
 <div class="copy reveal">
 <div class="eyebrow">India · Sourcing · Export</div>
