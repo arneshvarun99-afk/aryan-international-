@@ -6,7 +6,7 @@
 <meta name="description" content="Aryan International connects global buyers with Indian supply through sourcing, quotation and export support.">
 <title>Aryan International | India, Ready for the World</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 :root{
   --ink:#111214;
@@ -127,6 +127,77 @@ h1{font-family:"Space Grotesk",Arial,sans-serif;font-weight:400;font-size:clamp(
 
 @media(max-width:900px){.links{display:none}.heroIn,.split,.quoteGrid{grid-template-columns:1fr}.hero{min-height:auto}.heroIn{padding-top:135px}.globeWrap{height:510px}.cards,.prodGrid,.steps{grid-template-columns:1fr 1fr}.h2{font-size:48px}.navbtn{display:none}}
 @media(max-width:560px){.heroIn{padding:120px 20px 60px}.hero h1{font-size:59px}.hero .sub{font-size:17px}.globeWrap{height:430px}.floatCard{transform:scale(.82)}.cards,.prodGrid,.steps{grid-template-columns:1fr}.section{padding:84px 20px}.h2{font-size:42px}.step{min-height:250px}}
+
+/* Editorial redesign inspired by the visual principles of modern athlete/editorial sites. */
+body{background:#f4f4ef;color:#111}
+.nav{background:#f4f4efcc;backdrop-filter:blur(16px);border-bottom:1px solid #11111112}
+.nav.scrolled{background:#f4f4efee;color:#111}
+.brand{font-family:"Inter",sans-serif;font-weight:700;letter-spacing:.08em}
+.brand b{color:#111;font-weight:300}
+.links a:hover{color:#111}
+.navbtn{background:#d2ff00;color:#111;border:0;border-radius:9px}
+.hero{background:#f4f4ef}
+.heroBg{background:none}
+.heroIn{grid-template-columns:.86fr 1.14fr;gap:clamp(35px,6vw,100px);align-items:center}
+.copy{grid-column:2;grid-row:1}
+.globeWrap{grid-column:1;grid-row:1;height:min(760px,78vh);min-height:520px;background:#171717 url('garlic.svg') center/cover no-repeat;border-radius:20px;overflow:hidden}
+.globeWrap:before{content:"";position:absolute;inset:24px;border:1px solid #ffffff2b;border-radius:14px}
+.globe{visibility:hidden}
+.hero .copy h1{font-family:"DM Serif Display",Georgia,serif;font-size:clamp(76px,9vw,150px);line-height:.84;letter-spacing:-.045em;color:#111}
+.hero .copy h1 em{color:#d2ff00;-webkit-text-stroke:1px #111}
+.hero .sub{color:#555b54;max-width:650px}
+.actions .btn{border-radius:9px}
+.actions .btn:not(.alt){background:#d2ff00;color:#111}
+.actions .btn.alt{background:transparent;color:#111;border-color:#c5c8c0}
+.micro{border-top:1px solid #d9dbd3;padding-top:15px;max-width:650px}
+.floatCard{background:#d2ff00;color:#111;box-shadow:none;border-radius:9px;border:0;padding:12px 14px}
+.floatCard span{color:#31342f}
+.ticker{background:#d2ff00;border-color:#111}
+.products{background:#171717;color:#fff}
+.products .section{padding-top:120px;padding-bottom:120px}
+.products .eyebrow{color:#aeb3ab}
+.products .h2,.products .lead{color:#fff}
+.productSearch input{background:#222;border-color:#3a3a3a;color:#fff;border-radius:9px}
+.productSearch button{border-color:#4a4a4a;color:#fff;border-radius:9px}
+.prodGrid{grid-template-columns:repeat(3,1fr);gap:12px}
+.prod{border-radius:16px;background:#232323;height:440px}
+.prod:after{background:linear-gradient(180deg,transparent 30%,#000d 100%)}
+.miniBadge,.goldBadge{background:#d2ff00!important;color:#111!important;border-color:#d2ff00!important;border-radius:6px}
+.prod h3{font-family:"DM Serif Display",Georgia,serif;font-size:47px;line-height:.9}
+.prod p{color:#ddd}
+.prodArrow{border-color:#ffffff55}
+.prod:hover .prodArrow{background:#d2ff00;color:#111;border-color:#d2ff00}
+.process{background:#f4f4ef;color:#111}
+.process::before{background:none;animation:none}
+.process .section{padding-top:120px}
+.process .h2{color:#111}
+.step{border-top:1px solid #cfd2ca;border-right-color:#d9dbd3;min-height:290px}
+.step:last-child{border-right:0}
+.step h3{font-family:"DM Serif Display",Georgia,serif;font-size:37px;color:#111}
+.step p{color:#646960}
+.stepNo{color:#111}
+.step .line{background:#d2ff00}
+.quote{background:#f4f4ef}
+.quote:before{color:#e8e9e2}
+.form{border-radius:16px;box-shadow:none}
+.form h3{font-family:"DM Serif Display",Georgia,serif}
+.form button{background:#d2ff00;color:#111;border-radius:9px}
+.footer{background:#111}
+.footer .footerPanel{border-color:#d2ff00;border-top:1px solid #d2ff00}
+.footer b{color:#d2ff00}
+@media(max-width:900px){
+ .heroIn{grid-template-columns:1fr}
+ .copy{grid-column:auto;grid-row:auto}
+ .globeWrap{grid-column:auto;grid-row:auto;order:-1}
+ .prodGrid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:560px){
+ .heroIn{padding-inline:20px}
+ .globeWrap{height:58vh;min-height:380px}
+ .hero .copy h1{font-size:62px}
+ .prodGrid{grid-template-columns:1fr}
+}
+
 </style>
 <link rel="stylesheet" href="loader.css">
 </head>
@@ -139,8 +210,8 @@ h1{font-family:"Space Grotesk",Arial,sans-serif;font-weight:400;font-size:clamp(
 <header class="hero">
 <div class="heroBg"></div><div class="glow"></div>
 <div class="heroIn">
-<div class="copy reveal"><div class="eyebrow">India → Global Markets</div>
-<h1>India to the world.<br><em>Beautifully.</em></h1>
+<div class="copy reveal"><div class="eyebrow">India · Sourcing · Export</div>
+<h1>From India.<br><em>To anywhere.</em></h1>
 <p class="sub">Aryan International helps overseas buyers turn a product requirement into a practical sourcing conversation with Indian supply.</p>
 <div class="actions"><a class="btn" href="#quote">Tell us what you need</a><a class="btn alt" href="products.html?v=202610071">Explore products</a></div>
 <div class="micro"><span>Buyer-led sourcing</span><span>Clear specifications</span><span>Export coordination</span></div></div>
@@ -152,15 +223,15 @@ h1{font-family:"Space Grotesk",Arial,sans-serif;font-weight:400;font-size:clamp(
 </div>
 </div></header>
 
-<div class="ticker"><div class="track"><span>Source smarter</span><span>Made for international buyers</span><span>India to the world</span><span>One requirement at a time</span><span>Source smarter</span><span>Made for international buyers</span><span>India to the world</span></div></div>
+<div class="ticker"><div class="track"><span>India to global markets</span><span>Buyer-led sourcing</span><span>Clear specifications</span><span>Commercial clarity</span><span>Source smarter</span><span>Made for international buyers</span><span>India to the world</span></div></div>
 
-<section class="section" id="why"><div class="split"><div class="reveal"><div class="eyebrow">Why Aryan</div><div class="h2">Less supplier hunting.<br>More useful conversations.</div></div><div class="reveal"><p class="lead">International sourcing gets expensive when the product, supplier and commercial terms don't line up. Our process starts with what the buyer actually needs.</p><div class="cards"><div class="card"><div class="num">01</div><h3>Requirement first</h3><p class="muted">Start with product, quantity, destination, specification and any target commercial details you already know.</p></div><div class="card"><div class="num">02</div><h3>Relevant sourcing</h3><p class="muted">Search for suitable Indian supply instead of forcing every buyer into a fixed catalogue.</p></div><div class="card"><div class="num">03</div><h3>Commercial clarity</h3><p class="muted">Work through MOQ, packaging, lead time and quotation details before you commit.</p></div></div></div></div></section>
+<section class="section" id="why"><div class="split"><div class="reveal"><div class="eyebrow">02 · Source</div><div class="h2">The brief comes first.</div></div><div class="reveal"><p class="lead">International sourcing gets expensive when the product, supplier and commercial terms don't line up. Our process starts with what the buyer actually needs.</p><div class="cards"><div class="card"><div class="num">01</div><h3>Requirement first</h3><p class="muted">Start with product, quantity, destination, specification and any target commercial details you already know.</p></div><div class="card"><div class="num">02</div><h3>Relevant sourcing</h3><p class="muted">Search for suitable Indian supply instead of forcing every buyer into a fixed catalogue.</p></div><div class="card"><div class="num">03</div><h3>Commercial clarity</h3><p class="muted">Work through MOQ, packaging, lead time and quotation details before you commit.</p></div></div></div></div></section>
 
 <section class="products" id="products">
 <div class="section">
   <div class="reveal">
-    <div class="eyebrow">Export catalogue</div>
-    <div class="h2">Products with a story buyers can understand.</div>
+    <div class="eyebrow">04 · Product gallery</div>
+    <div class="h2">Products worth asking about.</div>
     <p class="lead">Open a product and get the commercial picture quickly: what it is, where it comes from, what to specify and how to request a quote.</p>
     <div class="productSearch"><input id="productSearch" type="search" placeholder="Search products: garlic, turmeric, PVC, coir…"><button type="button" id="clearProductSearch">Clear</button></div><div class="productEmpty" id="productEmpty">No matching product. Try another product name.</div>
   </div>
@@ -192,14 +263,14 @@ h1{font-family:"Space Grotesk",Arial,sans-serif;font-weight:400;font-size:clamp(
 </div>
 </section>
 
-<section class="process" id="process"><div class="section"><div class="reveal"><div class="eyebrow">The flow</div><div class="h2">One clear path from<br>request to order.</div></div><div class="steps">
+<section class="process" id="process"><div class="section"><div class="reveal"><div class="eyebrow">03 · How it works</div><div class="h2">Source. Match. Move.</div></div><div class="steps">
 <div class="step reveal"><div class="stepNo">01 · BRIEF</div><h3>Tell us the product</h3><p>Share what you want, how much you need and where it needs to go.</p><div class="line"></div></div>
 <div class="step reveal"><div class="stepNo">02 · SOURCE</div><h3>Find the fit</h3><p>Identify relevant Indian supply and narrow the options.</p><div class="line"></div></div>
 <div class="step reveal"><div class="stepNo">03 · QUOTE</div><h3>Work the numbers</h3><p>Align specification, MOQ, packaging, price and lead time.</p><div class="line"></div></div>
 <div class="step reveal"><div class="stepNo">04 · MOVE</div><h3>Take it forward</h3><p>Progress toward sample, order, documentation and shipment.</p><div class="line"></div></div>
 </div></div></section>
 
-<section class="section quote" id="quote"><div class="quoteGrid"><div class="reveal"><div class="eyebrow">RFQ · Request for quotation</div><div class="h2">Have a buyer requirement?</div><p class="lead">Put the brief in front of us. Even a rough requirement is a useful starting point.</p><p class="muted">International buyers can include their destination, estimated quantity, packaging, specifications or target price in the message.</p><div style="margin-top:28px;color:#777;font-size:14px">✉ aryaninternational00@gmail.com<br><br>☎ +91 96776 41402</div></div>
+<section class="section quote" id="quote"><div class="quoteGrid"><div class="reveal"><div class="eyebrow">06 · Request for quotation</div><div class="h2">Tell us what you need.</div><p class="lead">Put the brief in front of us. Even a rough requirement is a useful starting point.</p><p class="muted">International buyers can include their destination, estimated quantity, packaging, specifications or target price in the message.</p><div style="margin-top:28px;color:#777;font-size:14px">✉ aryaninternational00@gmail.com<br><br>☎ +91 96776 41402</div></div>
 <form class="form reveal" action="https://formsubmit.co/aryaninternational00@gmail.com" method="POST"><input type="hidden" name="_next" value="https://arneshvarun99-afk.github.io/aryan-international-/thank-you.html"><input type="hidden" name="_subject" value="New Aryan International Buyer RFQ"><input type="hidden" name="_captcha" value="false"><input type="hidden" name="_template" value="table"><h3>Start your enquiry</h3><p class="muted" style="margin-top:5px">We'll prepare an email with your requirement.</p><input name="name" id="name" required placeholder="Name / company"><input name="email" id="email" type="email" required placeholder="Business email"><input name="country" id="country" required placeholder="Country"><input name="product" id="product" required placeholder="Product"><input name="quantity" id="qty" placeholder="Estimated quantity"><textarea name="details" id="details" placeholder="Specifications, packaging, target price, delivery destination..."></textarea><button type="submit">SEND BUYER ENQUIRY →</button></form></div></section>
 
 <footer class="footer">© 2026 <b>Aryan International</b> · India · aryaninternational00@gmail.com · +91 96776 41402</footer>
