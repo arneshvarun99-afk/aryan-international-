@@ -74,7 +74,6 @@ if(heroEl && globeCanvas){
     const camera=new THREE.PerspectiveCamera(28,1,.1,100);
     camera.position.set(0,0,5.35);
 
-    // Dark-space lighting with one warm daylight source.
     scene.add(new THREE.AmbientLight(0x70808a,.48));
 
     const sun=new THREE.DirectionalLight(0xffead0,2.55);
@@ -118,7 +117,6 @@ if(heroEl && globeCanvas){
     );
     earthGroup.add(earth);
 
-    // Thin atmospheric shell for the space-edge glow.
     const atmosphere=new THREE.Mesh(
       new THREE.SphereGeometry(radius*1.035,112,112),
       new THREE.MeshBasicMaterial({
@@ -132,7 +130,6 @@ if(heroEl && globeCanvas){
     );
     earthGroup.add(atmosphere);
 
-    // Soft cloud veil, kept subtle so the geography stays sharp.
     const cloudMap=loader.load(
       'https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_clouds_1024.png'
     );
@@ -151,19 +148,30 @@ if(heroEl && globeCanvas){
     let pitch=-.11;
     let targetYaw=yaw;
     let targetPitch=pitch;
+
+    let velocityX=.00034;
+    let velocityY=0;
+    let pointerInside=false;
     let lastX=null;
     let lastY=null;
-    let dragging=false;
-    let interactionStrength=.0;
+    let lastTime=performance.now();
 
+    const reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 
-    // No automatic globe animation. It only moves in response to the pointer.
-    heroEl.addEventListener('pointerdown',e=>{
-      dragging=true;
+    // Slow cinematic idle spin, with the pointer changing direction/speed.
+    const updateIdleSpeed=()=>{
+      const r=heroEl.getBoundingClientRect();
+      const p=clamp((innerHeight-r.top)/(innerHeight+r.height),0,1);
+      velocityX=.00022 + p*.00040;
+    };
+    addEventListener('scroll',updateIdleSpeed,{passive:true});
+    updateIdleSpeed();
+
+    heroEl.addEventListener('pointerenter',e=>{
+      pointerInside=true;
       lastX=e.clientX;
       lastY=e.clientY;
-      interactionStrength=1;
     });
 
     heroEl.addEventListener('pointermove',e=>{
@@ -174,30 +182,29 @@ if(heroEl && globeCanvas){
       if(lastX!==null){
         const dx=e.clientX-lastX;
         const dy=e.clientY-lastY;
-        targetYaw+=dx*.006;
-        targetPitch=clamp(targetPitch-dy*.003,-.48,.48);
+
+        // Cursor motion adds inertia to the globe's natural rotation.
+        velocityX+=dx*.000045;
+        velocityY-=dy*.000020;
+        velocityX=clamp(velocityX,-.012,.012);
+        velocityY=clamp(velocityY,-.003,.003);
       }
 
       lastX=e.clientX;
       lastY=e.clientY;
-      interactionStrength=1;
 
-      // Tiny perspective tilt follows the cursor without changing the globe's position.
+      targetPitch+=((clamp(-ny*.18,-.18,.18))-targetPitch)*.06;
+
       globeCanvas.style.transform=
         'translate3d(0,0,0) rotateX('+(ny*-1.0)+'deg) rotateY('+(nx*1.15)+'deg)';
     });
 
-    const release=()=>{
-      dragging=false;
+    heroEl.addEventListener('pointerleave',()=>{
+      pointerInside=false;
       lastX=null;
       lastY=null;
-      interactionStrength=0;
       globeCanvas.style.transform='translate3d(0,0,0)';
-    };
-
-    heroEl.addEventListener('pointerup',release);
-    heroEl.addEventListener('pointercancel',release);
-    heroEl.addEventListener('pointerleave',release);
+    });
 
     const resize=()=>{
       const rect=globeCanvas.getBoundingClientRect();
@@ -211,26 +218,41 @@ if(heroEl && globeCanvas){
     addEventListener('resize',resize);
     resize();
 
-    const animate=()=>{
+    const clock=new THREE.Clock();
+
+    const animate=(now)=>{
       requestAnimationFrame(animate);
 
-      // Smoothly settle after a cursor gesture. No idle rotation.
-      yaw+=(targetYaw-yaw)*.075;
-      pitch+=(targetPitch-pitch)*.075;
+      const dt=Math.min(32,now-lastTime);
+      lastTime=now;
+      const frame=dt/16.6667;
+
+      // Keep a gentle perpetual motion, even when the cursor is still.
+      if(!reduced){
+        targetYaw+=velocityX*frame;
+      }
+
+      // Inertia decays back toward the slow cinematic idle speed.
+      const r=heroEl.getBoundingClientRect();
+      const p=clamp((innerHeight-r.top)/(innerHeight+r.height),0,1);
+      const idle=.00022+p*.00040;
+      velocityX += (idle-velocityX)*.018;
+      velocityY *= .92;
+
+      yaw+=(targetYaw-yaw)*.045;
+      pitch+=(targetPitch-pitch)*.045;
 
       earthGroup.rotation.y=yaw;
       earthGroup.rotation.x=pitch;
 
-      // Clouds drift only when the user is actively interacting with the globe.
-      if(interactionStrength>0 && dragging){
-        clouds.rotation.y=yaw*1.008;
-        clouds.rotation.x=pitch*.998;
-      }
+      // Clouds rotate just a touch faster to add depth.
+      clouds.rotation.y=yaw*1.015;
+      clouds.rotation.x=pitch*.997;
 
       renderer.render(scene,camera);
     };
 
-    animate();
+    requestAnimationFrame(animate);
   }).catch(err=>console.error('3D Earth renderer failed:',err));
 }
 
