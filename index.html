@@ -755,6 +755,116 @@ body{background:var(--cream);color:#111}
 }
 @media(max-width:900px){#globeStage.globeWrap{width:100vw!important;height:84vw!important}#globeStage .globeCanvas{width:86vw!important;opacity:.66!important}}
 @media(max-width:560px){#globeStage.globeWrap{width:110vw!important;height:96vw!important}#globeStage .globeCanvas{width:102vw!important;opacity:.54!important}}
+/* HERO GLOBE: full-bleed, realistic, centered behind typography */
+.hero{
+  background:
+    radial-gradient(circle at 50% 48%,rgba(23,59,53,.12),transparent 31%),
+    radial-gradient(circle at 50% 58%,rgba(200,154,82,.07),transparent 48%),
+    linear-gradient(140deg,#f8f4ec 0%,#f5f0e7 54%,#eee8dd 100%)!important;
+}
+.heroIn{
+  width:100%!important;
+  max-width:1600px!important;
+  min-height:calc(100vh - 82px)!important;
+  padding:96px 24px 60px!important;
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  grid-template-rows:1fr!important;
+  place-items:center!important;
+  gap:0!important;
+  position:relative!important;
+  overflow:hidden!important;
+}
+#globeStage.globeWrap{
+  grid-area:1/1!important;
+  width:min(1050px,94vw)!important;
+  height:min(1050px,94vw)!important;
+  min-height:0!important;
+  display:grid!important;
+  place-items:center!important;
+  position:relative!important;
+  z-index:1!important;
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  overflow:visible!important;
+  pointer-events:auto!important;
+}
+#globeStage .globeCanvas{
+  width:min(900px,86vw)!important;
+  height:auto!important;
+  aspect-ratio:1!important;
+  display:block!important;
+  opacity:.72!important;
+  background:transparent!important;
+  border:0!important;
+  outline:0!important;
+  mix-blend-mode:normal!important;
+  filter:drop-shadow(0 30px 80px rgba(0,0,0,.20)) drop-shadow(0 0 55px rgba(66,112,128,.10))!important;
+}
+#globeStage .globeAura{
+  position:absolute;
+  width:min(980px,92vw);
+  aspect-ratio:1;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(52,92,103,.11) 0%,rgba(52,92,103,.04) 42%,transparent 70%);
+  filter:blur(28px);
+  z-index:-1;
+  pointer-events:none;
+}
+.copy{
+  grid-area:1/1!important;
+  width:min(1250px,96vw)!important;
+  z-index:10!important;
+  justify-self:center!important;
+  align-self:center!important;
+  position:relative!important;
+  text-align:center!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  pointer-events:none!important;
+}
+.copy .actions,.copy .actions a{pointer-events:auto}
+.copy h1{
+  font-family:"DM Serif Display",Georgia,serif!important;
+  font-size:clamp(108px,14.8vw,250px)!important;
+  line-height:.74!important;
+  letter-spacing:-.078em!important;
+  font-weight:400!important;
+  max-width:1250px!important;
+  color:#101010!important;
+  margin:10px 0 24px!important;
+  text-shadow:0 3px 0 rgba(255,255,255,.45),0 10px 34px rgba(255,248,236,.72)!important;
+}
+.copy h1 em{
+  color:var(--gold2)!important;
+  -webkit-text-stroke:1.2px #161616!important;
+  text-shadow:0 3px 0 rgba(255,255,255,.38),0 10px 34px rgba(255,248,236,.72)!important;
+}
+.copy .eyebrow{font-size:13px!important;font-weight:800!important;color:#946728!important}
+.copy .sub{
+  max-width:720px!important;
+  font-size:clamp(17px,1.45vw,23px)!important;
+  line-height:1.48!important;
+  font-weight:600!important;
+  color:#2f3835!important;
+}
+.copy .micro{color:#3b4541!important;font-weight:700!important}
+@media(max-width:900px){
+  .heroIn{min-height:calc(100vh - 70px)!important;padding:85px 18px 45px!important}
+  #globeStage.globeWrap{width:110vw!important;height:110vw!important}
+  #globeStage .globeCanvas{width:100vw!important;opacity:.58!important}
+  .copy h1{font-size:clamp(78px,14.5vw,160px)!important}
+}
+@media(max-width:560px){
+  .heroIn{min-height:calc(100vh - 64px)!important;padding:76px 14px 38px!important}
+  #globeStage.globeWrap{width:125vw!important;height:125vw!important}
+  #globeStage .globeCanvas{width:112vw!important;opacity:.46!important}
+  .copy h1{font-size:clamp(62px,17vw,100px)!important;line-height:.78!important}
+  .copy .sub{font-size:15px!important}
+}
 </style>
 </head>
 <body><div class="noise"></div><div class="progress" id="progress"></div>
@@ -827,6 +937,6 @@ body{background:var(--cream);color:#111}
 <form class="form reveal" action="https://formsubmit.co/aryaninternational00@gmail.com" method="POST"><input type="hidden" name="_next" value="https://arneshvarun99-afk.github.io/aryan-international-/thank-you.html"><input type="hidden" name="_subject" value="New Aryan International Buyer RFQ"><input type="hidden" name="_captcha" value="false"><input type="hidden" name="_template" value="table"><h3>Start your enquiry</h3><p class="muted" style="margin-top:5px">We'll prepare an email with your requirement.</p><input name="name" id="name" required placeholder="Name / company"><input name="email" id="email" type="email" required placeholder="Business email"><input name="country" id="country" required placeholder="Country"><input name="product" id="product" required placeholder="Product"><input name="quantity" id="qty" placeholder="Estimated quantity"><textarea name="details" id="details" placeholder="Specifications, packaging, target price, delivery destination..."></textarea><button type="submit">SEND BUYER ENQUIRY →</button></form></div></section>
 
 <footer class="footer">© 2026 <b>Aryan International</b> · India · aryaninternational00@gmail.com · +91 96776 41402</footer>
-<script src="index.js"></script>
+<script src="index.js?v=202610070945"></script>
 </body>
 </html>
