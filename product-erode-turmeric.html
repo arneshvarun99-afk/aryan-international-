@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Erode Turmeric | Aryan International</title>
+<meta name="description" content="Origin matters. For Erode Manjal, the provenance itself is part of the product story.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+:root{--navy:#0d1620;--forest:#173b35;--gold:#c89a52;--gold2:#e2c07e;--cream:#f5f0e7;--paper:#fffdf9;--muted:#6b706f;--line:#ddd6ca}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:#111;font-family:Inter,Arial,sans-serif}
+a{color:inherit;text-decoration:none}button{font:inherit}
+.progress{position:fixed;z-index:100;left:0;top:0;width:0;height:4px;background:linear-gradient(90deg,var(--gold),var(--gold2))}
+.nav{position:fixed;z-index:90;top:0;left:0;right:0;color:#fff;transition:.3s}.nav.scrolled{background:#0d1620e8;backdrop-filter:blur(16px);border-bottom:1px solid #ffffff13}
+.navin{max-width:1280px;margin:auto;height:80px;padding:0 28px;display:flex;justify-content:space-between;align-items:center}.logo{font-family:"Space Grotesk";font-size:21px;font-weight:700;letter-spacing:.08em}.logo b{color:var(--gold2);font-weight:500}.links{display:flex;gap:26px;font-size:12px}.links a:hover{color:var(--gold2)}.navbtn{border:1px solid #ffffff44;border-radius:999px;padding:11px 17px;font-size:12px}
+.hero{height:100vh;min-height:720px;background:var(--navy);color:#fff;position:relative;overflow:hidden}.heroImage{position:absolute;inset:0;background:linear-gradient(90deg,#071017e8 0%,#0d1620b5 42%,#0d162055 100%),url('https://wanderon-images.gumlet.io/blogs/new/2024/05/turmeric-market.jpg?auto=compress%2Cformat&w=1200') center/cover;transform:scale(1.05);animation:heroZoom 12s ease-out forwards}.heroNoise{position:absolute;inset:0;background:radial-gradient(circle at 70% 36%,#d8ff7322,transparent 25%),linear-gradient(120deg,transparent,#ffffff06,transparent);animation:sweep 7s ease-in-out infinite}
+.heroIn{position:relative;z-index:2;max-width:1280px;height:100%;margin:auto;padding:145px 28px 70px;display:flex;align-items:center}.heroCopy{max-width:900px}.eyebrow{display:inline-flex;gap:10px;align-items:center;text-transform:uppercase;letter-spacing:.24em;font-size:10px;color:var(--gold2)}.eyebrow:before{content:"";width:31px;height:1px;background:var(--gold)}h1{font-family:"Space Grotesk";font-size:clamp(68px,9vw,126px);line-height:.86;letter-spacing:-.075em;margin:25px 0;font-weight:700;max-width:1050px}.heroLead{font-size:20px;line-height:1.65;color:#d3dade;max-width:720px}.actions{display:flex;gap:11px;flex-wrap:wrap;margin-top:32px}.btn{padding:15px 22px;border-radius:999px;background:#fff;color:#111;font-weight:700;font-size:12px;border:0;cursor:pointer}.btn.alt{background:transparent;color:#fff;border:1px solid #ffffff44}
+.specStrip{position:absolute;z-index:3;bottom:30px;left:0;right:0}.specIn{max-width:1280px;margin:auto;padding:0 28px;display:flex;gap:12px;flex-wrap:wrap}.chip{border:1px solid #ffffff29;background:#ffffff08;border-radius:999px;padding:9px 12px;color:#cfd6d8;font-size:10px;letter-spacing:.05em}
+.scrollHint{position:absolute;right:28px;bottom:28px;color:#ffffff88;font-size:10px;letter-spacing:.18em;writing-mode:vertical-rl;display:flex;gap:10px;align-items:center}.scrollHint:after{content:"";height:58px;width:1px;background:linear-gradient(#c89a52,transparent);animation:drop 1.6s ease-in-out infinite}
+
+.section{max-width:1280px;margin:auto;padding:120px 28px}.section.cream{max-width:none;background:var(--cream)}.sectionIn{max-width:1280px;margin:auto}.eyebrow.dark{color:#8c682f}.eyebrow.dark:before{background:#8c682f}.h2{font-family:"Space Grotesk";font-size:clamp(48px,6vw,80px);line-height:.94;letter-spacing:-.055em;margin:12px 0 25px}.lead{font-size:21px;line-height:1.65;max-width:780px}.muted{font-size:15px;color:var(--muted);line-height:1.8}
+.story{display:grid;grid-template-columns:.9fr 1.1fr;gap:70px;margin-top:35px}.stickyVisual{position:sticky;top:120px;height:67vh;min-height:530px;border-radius:16px;overflow:hidden;background:#1d2b2f;box-shadow:0 30px 100px #0d162018}.visualImage{position:absolute;inset:0;background:center/cover var(--visual);transition:transform .9s cubic-bezier(.2,.8,.2,1),filter .8s,opacity .55s}.visualImage:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#07101711 25%,#071017c7)}.visualTag{position:absolute;z-index:2;left:24px;top:22px;border:1px solid #ffffff45;color:#fff;background:#0003;border-radius:999px;padding:7px 10px;font-size:9px;letter-spacing:.18em}.visualCaption{position:absolute;z-index:2;left:26px;right:26px;bottom:25px;color:#fff}.visualCaption strong{display:block;font-family:"Space Grotesk";font-size:34px;letter-spacing:-.04em}.visualCaption span{display:block;color:#d4d8da;font-size:12px;margin-top:5px}
+.steps{display:flex;flex-direction:column;gap:18vh;padding-bottom:10vh}.step{min-height:65vh;display:flex;flex-direction:column;justify-content:center;border-top:1px solid var(--line);padding-top:40px;opacity:.25;transform:translateY(35px);transition:opacity .8s,transform .8s}.step.active{opacity:1;transform:none}.stepNo{font-size:10px;letter-spacing:.2em;color:#9b7137}.step h3{font-family:"Space Grotesk";font-size:42px;line-height:1;letter-spacing:-.045em;margin:16px 0}.step p{font-size:17px;line-height:1.8;color:#555;max-width:560px}.pointGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:22px;max-width:620px}.point{padding:15px;border:1px solid var(--line);background:#fff;font-size:12px}.point:before{content:"✓";color:var(--gold);margin-right:8px}
+
+.factBar{background:var(--forest);color:#fff}.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#ffffff17;margin-top:35px}.fact{padding:25px;background:var(--forest)}.fact b{font-family:"Space Grotesk";font-size:30px;display:block}.fact span{display:block;color:#bdc9c6;font-size:11px;margin-top:4px}
+.rfq{background:var(--navy);color:#fff;position:relative;overflow:hidden}.rfq:before{content:"RFQ";position:absolute;right:-40px;top:30px;font-family:"Space Grotesk";font-size:30vw;font-weight:800;color:#ffffff05;letter-spacing:-.08em}.rfqGrid{display:grid;grid-template-columns:1fr 1fr;gap:80px;position:relative;z-index:2}.rfq h2{font-family:"Space Grotesk";font-size:65px;line-height:.95;letter-spacing:-.06em;margin:10px 0 20px}.form{background:#fff;color:#111;padding:30px;border-radius:12px}.form input,.form textarea{width:100%;margin-top:9px;padding:14px;border:1px solid #ddd7ce;font-size:14px}.form textarea{min-height:120px}.form button{width:100%;margin-top:10px;padding:15px;border:0;border-radius:999px;background:var(--gold);font-weight:800;cursor:pointer}
+.sources{padding-top:35px;margin-top:45px;border-top:1px solid var(--line)}.sources a{display:inline-block;color:#6d5633;text-decoration:underline;margin:6px 10px 0 0;font-size:12px}
+.footer{background:#091017;color:#9ba5ab;text-align:center;padding:35px 20px;font-size:12px}.footer b{color:var(--gold2);font-weight:500}
+@keyframes heroZoom{to{transform:scale(1)}}@keyframes sweep{0%,100%{opacity:.3;transform:translateX(-3%)}50%{opacity:1;transform:translateX(3%)}}@keyframes drop{0%,100%{transform:translateY(0);opacity:.55}50%{transform:translateY(8px);opacity:1}}
+@media(max-width:850px){.links,.navbtn{display:none}.story,.rfqGrid{grid-template-columns:1fr}.stickyVisual{position:relative;top:auto;height:55vh;min-height:380px;margin-bottom:35px}.steps{gap:8vh}.step{min-height:auto;padding:60px 0}.facts{grid-template-columns:1fr 1fr}.hero{min-height:760px}.heroIn{padding:125px 20px 50px}}
+@media(max-width:540px){.section{padding:80px 20px}h1{font-size:58px}.heroLead{font-size:17px}.factStrip{bottom:20px}.facts{grid-template-columns:1fr 1fr}.pointGrid{grid-template-columns:1fr}.rfq h2{font-size:49px}}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<nav class="nav" id="nav"><div class="navin"><a class="logo" href="index.html">ARYAN <b>INTERNATIONAL</b></a><div class="links"><a href="products.html">All products</a><a href="#source">Source</a><a href="#quality">Quality</a><a href="#rfq">RFQ</a></div><a class="navbtn" href="#rfq">Request a quote →</a></div></nav>
+
+<header class="hero">
+<div class="heroImage" style="background-image:linear-gradient(90deg,#071017e8 0%,#0d1620b5 42%,#0d162055 100%),url('https://wanderon-images.gumlet.io/blogs/new/2024/05/turmeric-market.jpg?auto=compress%2Cformat&w=1200');"></div>
+<div class="heroNoise"></div>
+<div class="heroIn"><div class="heroCopy">
+<div class="eyebrow">GI ORIGIN · ERODE MANJAL</div>
+<h1>Erode Turmeric</h1>
+<p class="heroLead">Origin matters. For Erode Manjal, the provenance itself is part of the product story.</p>
+<div class="actions"><a class="btn" href="#rfq">Build a buyer brief →</a><a class="btn alt" href="products.html">Back to catalogue</a></div>
+</div></div>
+<div class="specStrip"><div class="specIn"><span class="chip">Erode, Tamil Nadu</span><span class="chip">GI registered</span><span class="chip">Whole / processed formats</span><span class="chip">Verification before GI claim</span></div></div>
+<div class="scrollHint">SCROLL TO SOURCE <span>↓</span></div>
+</header>
+
+<section class="section" id="source"><div class="sectionIn">
+<div class="eyebrow dark">01 · Source</div><div class="h2">Where we source</div>
+<p class="lead">Erode Manjal (Erode Turmeric) is a registered Geographical Indication in India. The official GI register identifies it as an agricultural good from Tamil Nadu, with the GI registration valid through 2031. For any GI-labelled commercial lot, we should verify the source and applicable authorized-user / GI documentation before using the GI claim in an offer. </p>
+<div class="story">
+  <div class="stickyVisual" data-visual="source"><div class="visualImage" style="--visual:url('https://wanderon-images.gumlet.io/blogs/new/2024/05/turmeric-market.jpg?auto=compress%2Cformat&w=1200')"></div><div class="visualTag">SOURCE LAYER</div><div class="visualCaption"><strong>Erode · Tamil Nadu</strong><span>GI-registered origin, verified lot</span></div></div>
+  <div class="steps">
+    <article class="step" data-title="Start in the GI geography." data-caption="Erode Manjal · Tamil Nadu"><div class="stepNo">01 / ORIGIN</div><h3>Start in the GI geography.</h3><p>Erode Manjal (Erode Turmeric) is registered as a GI agricultural good in Tamil Nadu. The offer should distinguish ordinary turmeric from a lot legitimately eligible for the GI claim.</p><div class="pointGrid"><div class="point">Erode, Tamil Nadu</div><div class="point">GI registered</div><div class="point">Verify authorized-user / GI basis</div></div></article>
+    <article class="step" data-title="Choose the form." data-caption="Whole rhizome or processed"><div class="stepNo">02 / MATCH</div><h3>Choose the form.</h3><p>Tell us whether you need whole turmeric, dried fingers or powder, and whether there is a target curcumin specification.</p><div class="pointGrid"><div class="point">Whole / powder</div><div class="point">Grade / form</div><div class="point">Curcumin if required</div></div></article>
+    <article class="step" data-title="Lock the lot identity." data-caption="Origin · grade · test"><div class="stepNo">03 / LOT</div><h3>Lock the lot identity.</h3><p>Keep origin, product form, test specification and documentation aligned so the buyer sees one coherent lot story.</p><div class="pointGrid"><div class="point">Origin evidence</div><div class="point">Specification</div><div class="point">Documentation</div></div></article>
+  </div>
+</div></div></section>
+
+<section class="section cream" id="quality"><div class="sectionIn">
+<div class="eyebrow dark">02 · Quality</div><div class="h2">Quality gate</div><p class="lead">Tamil Nadu Agricultural University guidance for turmeric highlights buyer-visible checks such as bright yellow colour, suitable finger size, hardness, smooth skin and absence of impurities. For spice exports, analytical testing can be matched to the buyer's specification and importing-country rules; the Spices Board's quality laboratories perform testing to applicable standards and food regulations. </p>
+<div class="story">
+  <div class="stickyVisual" data-visual="quality"><div class="visualImage" style="--visual:url('https://geographicalindicationsoftamilnadu.files.wordpress.com/2021/04/turmeric.jpg?w=1024')"></div><div class="visualTag">QUALITY LAYER</div><div class="visualCaption"><strong>The right yellow</strong><span>Appearance, form, cleanliness and analytical checks</span></div></div>
+  <div class="steps">
+    <article class="step"><div class="stepNo">01 / VISUAL</div><h3>Visual grade.</h3><p>TNAU's market guidance points to bright yellow colour, suitable finger size, hardness, smooth skin and freedom from impurities.</p><div class="pointGrid"><div class="point">Colour</div><div class="point">Finger size</div><div class="point">Hardness / cleanliness</div></div></article>
+    <article class="step"><div class="stepNo">02 / SPEC</div><h3>Match the specification.</h3><p>If a buyer requires curcumin or a destination-specific food-safety parameter, include it in the product brief rather than adding it after the quotation.</p><div class="pointGrid"><div class="point">Curcumin if required</div><div class="point">Moisture / impurities</div><div class="point">Destination requirement</div></div></article>
+    <article class="step"><div class="stepNo">03 / TEST</div><h3>Verify the GI claim.</h3><p>The GI register is the authority for the registered indication. The commercial lot and supplier basis should be checked before using GI language in buyer documents.</p><div class="pointGrid"><div class="point">GI registration</div><div class="point">Source verification</div><div class="point">Supplier eligibility</div></div></article>
+  </div>
+</div></div></section>
+
+<section class="factBar"><div class="section" style="padding-block:70px"><div class="eyebrow">Buyer-ready snapshot</div><div class="facts"><div class="fact"><b>GI</b><span>Erode Manjal</span></div><div class="fact"><b>CLASS</b><span>Agricultural · Class 30</span></div><div class="fact"><b>REGION</b><span>Tamil Nadu</span></div><div class="fact"><b>RFQ</b><span>Origin + test spec</span></div></div></div></section>
+
+<section class="section" id="pack"><div class="sectionIn">
+<div class="eyebrow dark">03 · Pack & move</div><div class="h2">Packaging follows the buyer brief.</div><p class="lead">Whole turmeric or processed formats can be packed to buyer specification. For a GI-positioned offer, the dossier should distinguish ordinary turmeric from a lot that is actually eligible to be marketed as Erode Manjal under the applicable GI framework.</p>
+<div class="cards" style="margin-top:40px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px"><div class="point" style="padding:28px"><b>Specification</b><br>Agree the exact product and commercial specification before order confirmation.</div><div class="point" style="padding:28px"><b>Packaging</b><br>Choose bulk, carton, mesh or other buyer-specified formats appropriate to the market.</div><div class="point" style="padding:28px"><b>Dispatch</b><br>Confirm destination, documents and shipment requirements before release.</div></div>
+<div class="sources"><b>Research references used for this product</b><br><a href="https://search.ipindia.gov.in/GIRPublicSearch/Application/Details/231" target="_blank" rel="noopener">IP India GI registration ↗</a><a href="https://www.agritech.tnau.ac.in/horticulture/horti_spice_turmeric_harvest.html" target="_blank" rel="noopener">TNAU turmeric grade guidance ↗</a><a href="https://www.indianspices.com/indianspices/quality-evaluation-laboratory.html" target="_blank" rel="noopener">Spices Board QEL ↗</a></div>
+</div></section>
+
+<section class="section rfq" id="rfq"><div class="rfqGrid">
+<div><div class="eyebrow">04 · Buyer enquiry</div><h2>Turn this product into a quotation.</h2><p style="color:#bdc7ca;font-size:18px;line-height:1.7;max-width:560px">Tell us whole or powder, quantity, required curcumin specification if any, packing, destination and whether GI documentation is required.</p></div>
+<form class="form" onsubmit="sendMail(event)"><strong style="font-family:'Space Grotesk';font-size:27px">Start the RFQ</strong><input id="name" required placeholder="Name / company"><input id="email" type="email" required placeholder="Business email"><input id="country" required placeholder="Country / destination"><input id="qty" required placeholder="Estimated quantity"><textarea id="details" placeholder="Specification, size/grade, packing, target price, standards..."></textarea><button>REQUEST QUOTATION →</button></form>
+</div></section>
+
+<footer class="footer">© 2026 <b>Aryan International</b> · India · aryaninternational00@gmail.com · +91 96776 41402</footer>
+
+<script>
+const nav=document.getElementById('nav'),bar=document.getElementById('progress');
+function fx(){const h=document.documentElement.scrollHeight-innerHeight;bar.style.width=(scrollY/Math.max(h,1)*100)+'%';nav.classList.toggle('scrolled',scrollY>40)}addEventListener('scroll',fx,{passive:true});fx();
+
+const visuals=[...document.querySelectorAll('.story')];
+visuals.forEach(story=>{
+ const visual=story.querySelector('.stickyVisual'), img=visual.querySelector('.visualImage'), cap=visual.querySelector('strong'), sub=visual.querySelector('span');
+ const steps=[...story.querySelectorAll('.step')];
+ const obs=new IntersectionObserver(es=>es.forEach(e=>{
+   if(e.isIntersecting){
+      steps.forEach(s=>s.classList.remove('active'));e.target.classList.add('active');
+      const title=e.target.dataset.title || e.target.querySelector('h3')?.textContent || '';
+      const caption=e.target.dataset.caption || 'Buyer quality layer';
+      cap.textContent=title;sub.textContent=caption;
+      img.style.transform='scale(1.06)';img.style.filter='brightness(.84)';
+      setTimeout(()=>{img.style.transform='scale(1)';img.style.filter='brightness(1)'},500);
+   }
+ }),{threshold:.55});
+ steps.forEach(s=>obs.observe(s));
+});
+const firstSteps=document.querySelectorAll('.step:first-child');firstSteps.forEach(s=>s.classList.add('active'));
+function sendMail(e){e.preventDefault();const subject=`International Buyer Enquiry - Erode Turmeric`;const body=`Product: Erode Turmeric\\n\\nName / company: ${name.value}\\nEmail: ${email.value}\\nCountry / destination: ${country.value}\\nEstimated quantity: ${qty.value}\\nDetails: ${details.value}`;location.href=`mailto:aryaninternational00@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`}
+</script>
+</body></html>
