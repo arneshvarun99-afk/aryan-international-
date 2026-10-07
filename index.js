@@ -203,17 +203,12 @@ document.querySelectorAll('.btn,.navbtn').forEach(btn=>{
 
 // Editorial motion inspired by premium athlete/product sites
 const motionReduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const heroVisual=document.querySelector('.globeWrap');
 const heroCopy=document.querySelector('.copy');
 const productCards=[...document.querySelectorAll('.prod')];
 
 if(!motionReduced){
   addEventListener('scroll',()=>{
     const y=scrollY;
-    if(heroVisual){
-      const shift=Math.min(45,y*.08);
-      heroVisual.style.transform=`translate3d(0,${-shift}px,0)`;
-    }
     if(heroCopy){
       heroCopy.style.transform=`translate3d(0,${Math.min(28,y*.035)}px,0)`;
     }
