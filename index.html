@@ -299,9 +299,40 @@ function resetProductTransition(){
 addEventListener('pageshow', resetProductTransition);
 
 function sendMail(e){
- e.preventDefault();
- const body=`Buyer enquiry\n\nName / company: ${name.value}\nEmail: ${email.value}\nCountry: ${country.value}\nProduct: ${product.value}\nEstimated quantity: ${qty.value}\nDetails: ${details.value}`;
- location.href=`mailto:aryaninternational00@gmail.com?subject=${encodeURIComponent('International Buyer Enquiry - '+product.value)}&body=${encodeURIComponent(body)}`
+  e.preventDefault();
+
+  const nameVal = document.getElementById('name').value.trim();
+  const emailVal = document.getElementById('email').value.trim();
+  const countryVal = document.getElementById('country').value.trim();
+  const productVal = document.getElementById('product').value.trim();
+  const qtyVal = document.getElementById('qty').value.trim();
+  const detailsVal = document.getElementById('details').value.trim();
+
+  const body =
+`Buyer enquiry
+
+Name / company: ${nameVal}
+Email: ${emailVal}
+Country: ${countryVal}
+Product: ${productVal}
+Estimated quantity: ${qtyVal}
+Details: ${detailsVal}`;
+
+  const subject = 'International Buyer Enquiry - ' + productVal;
+  const mailto = 'mailto:aryaninternational00@gmail.com'
+    + '?subject=' + encodeURIComponent(subject)
+    + '&body=' + encodeURIComponent(body);
+
+  const btn = e.target.querySelector('button[type="submit"]');
+  btn.textContent = 'OPENING EMAIL…';
+  btn.disabled = true;
+
+  window.location.href = mailto;
+
+  setTimeout(() => {
+    btn.textContent = 'SEND BUYER ENQUIRY →';
+    btn.disabled = false;
+  }, 2500);
 }
 </script>
 </body>
