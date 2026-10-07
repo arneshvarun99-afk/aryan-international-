@@ -736,6 +736,25 @@ body{background:var(--cream);color:#111}
   font-weight:800!important;
 }
 
+/* Reliable realistic WebGL globe in hero background */
+#globeStage.globeWrap{
+  grid-area:1/1!important;width:min(940px,84vw)!important;height:min(940px,84vw)!important;min-height:0!important;
+  display:grid!important;place-items:center!important;background:transparent!important;border:0!important;border-radius:0!important;
+  box-shadow:none!important;overflow:visible!important;z-index:1!important;pointer-events:none!important;
+}
+#globeStage .globeCanvas{
+  width:min(820px,76vw)!important;height:auto!important;aspect-ratio:1!important;display:block!important;
+  background:transparent!important;border:0!important;outline:0!important;opacity:.80!important;mix-blend-mode:normal!important;
+  filter:drop-shadow(0 25px 70px rgba(0,0,0,.28)) drop-shadow(0 0 50px rgba(88,140,157,.14))!important;
+  transform-origin:center!important;pointer-events:none!important;
+}
+#globeStage .globeAura{
+  position:absolute;width:min(850px,78vw);aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle,rgba(69,112,128,.12) 0%,rgba(69,112,128,.05) 43%,transparent 70%);
+  filter:blur(20px);z-index:-1;pointer-events:none;
+}
+@media(max-width:900px){#globeStage.globeWrap{width:100vw!important;height:84vw!important}#globeStage .globeCanvas{width:86vw!important;opacity:.66!important}}
+@media(max-width:560px){#globeStage.globeWrap{width:110vw!important;height:96vw!important}#globeStage .globeCanvas{width:102vw!important;opacity:.54!important}}
 </style>
 </head>
 <body><div class="noise"></div><div class="progress" id="progress"></div>
@@ -745,15 +764,8 @@ body{background:var(--cream);color:#111}
 <div class="heroBg"></div><div class="glow"></div>
 <div class="heroIn">
 <div class="globeWrap" id="globeStage" aria-hidden="true">
-  <div class="globeSphere">
-    <div class="globeStrip" id="globeStrip">
-      <img src="https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_atmos_2048.jpg" alt="" draggable="false">
-      <img src="https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_atmos_2048.jpg" alt="" draggable="false">
-      <img src="https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_atmos_2048.jpg" alt="" draggable="false">
-    </div>
-    <div class="globeShade"></div>
-    <div class="globeEdge"></div>
-  </div>
+  <canvas class="globeCanvas" id="globeCanvas" aria-label="Interactive realistic rotating Earth"></canvas>
+  <div class="globeAura"></div>
 </div>
 <div class="copy reveal">
 <div class="eyebrow">India · Sourcing · Export</div>
