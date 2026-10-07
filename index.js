@@ -59,13 +59,7 @@ const globeCanvas=document.getElementById('globeCanvas');
 if(globeStage && globeCanvas){
   (async()=>{
     try{
-      const [THREE,d3,topojson,worldAtlasModule]=await Promise.all([
-        import('https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js'),
-        import('https://cdn.jsdelivr.net/npm/d3-geo@3.1.1/+esm'),
-        import('https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/+esm'),
-        import('https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/+esm')
-      ]);
-      const worldAtlas=worldAtlasModule.default||worldAtlasModule;
+      const {default:THREE}=await import('https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js');
       const renderer=new THREE.WebGLRenderer({canvas:globeCanvas,alpha:true,antialias:true,powerPreference:'high-performance'});
       renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));
       renderer.outputColorSpace=THREE.SRGBColorSpace;
@@ -76,11 +70,11 @@ if(globeStage && globeCanvas){
       const camera=new THREE.PerspectiveCamera(34,1,.1,100);
       camera.position.set(0,0,5.3);
 
-      scene.add(new THREE.AmbientLight(0x8faab5,.72));
-      const key=new THREE.DirectionalLight(0xffead0,2.0);
+      scene.add(new THREE.AmbientLight(0x738a96,.52));
+      const key=new THREE.DirectionalLight(0xfff0d8,2.45);
       key.position.set(-3.5,1.5,4);
       scene.add(key);
-      const fill=new THREE.DirectionalLight(0x6c9fc0,.6);
+      const fill=new THREE.DirectionalLight(0x47788f,.34);
       fill.position.set(4,0,-2);
       scene.add(fill);
 
@@ -91,13 +85,18 @@ if(globeStage && globeCanvas){
       const textureLoader=new THREE.TextureLoader();
       const earthTexture=textureLoader.load('https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_atmos_2048.jpg');
       earthTexture.colorSpace=THREE.SRGBColorSpace;
+      const earthNormal=textureLoader.load('https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_normal_2048.jpg');
+      const earthSpecular=textureLoader.load('https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_specular_2048.jpg');
 
       const earth=new THREE.Mesh(
-        new THREE.SphereGeometry(radius,96,96),
+        new THREE.SphereGeometry(radius,128,128),
         new THREE.MeshPhongMaterial({
           map:earthTexture,
-          shininess:8,
-          specular:new THREE.Color(0x334455)
+          normalMap:earthNormal,
+          normalScale:new THREE.Vector2(.65,.65),
+          specularMap:earthSpecular,
+          specular:new THREE.Color(0x5d7280),
+          shininess:18
         })
       );
       globeGroup.add(earth);
@@ -114,23 +113,6 @@ if(globeStage && globeCanvas){
       );
       globeGroup.add(atmosphere);
 
-      // Subtle trade-route orbital rings.
-      const ringMaterial=new THREE.LineBasicMaterial({
-        color:0xe2c07e,
-        transparent:true,
-        opacity:.14
-      });
-      for(const tilt of [.15,-.55,.85]){
-        const pts=Array.from({length:128},(_,i)=>{
-          const a=i/128*Math.PI*2;
-          return new THREE.Vector3(Math.cos(a)*radius*1.16,Math.sin(a)*radius*1.16,0);
-        });
-        const ring=new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(pts),ringMaterial);
-        ring.rotation.x=Math.PI/3;
-        ring.rotation.z=tilt;
-        globeGroup.add(ring);
-      }
-
       let yaw=.55,pitch=-.12,targetYaw=yaw,targetPitch=pitch;
       let lastX=null,lastY=null,hovering=false;
       const reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -144,7 +126,7 @@ if(globeStage && globeCanvas){
         const r=globeStage.getBoundingClientRect();
         const nx=e.clientX/r.width-.5,ny=e.clientY/r.height-.5;
         if(lastX!==null){
-          targetYaw+=(e.clientX-lastX)*.0085;
+          targetYaw+=(e.clientX-lastX)*.0065;
           targetPitch=clamp(targetPitch-(e.clientY-lastY)*.0045,-.62,.62);
         }
         lastX=e.clientX;lastY=e.clientY;
@@ -167,7 +149,7 @@ if(globeStage && globeCanvas){
       const clock=new THREE.Clock();
       function render(){
         requestAnimationFrame(render);
-        if(!reduced&&!hovering)targetYaw+=.00062;
+        if(!reduced&&!hovering)targetYaw+=.00016;
         yaw+=(targetYaw-yaw)*.075;
         pitch+=(targetPitch-pitch)*.075;
         globeGroup.rotation.y=yaw;
