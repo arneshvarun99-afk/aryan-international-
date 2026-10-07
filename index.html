@@ -984,6 +984,87 @@ body{background:var(--cream);color:#111}
   .hero::before,.hero::after{animation:none!important}
 }
 
+/* Independent Earth background layer */
+.hero{
+  position:relative!important;
+  overflow:hidden!important;
+  isolation:isolate!important;
+}
+#globeStage.globeWrap{
+  position:absolute!important;
+  left:50%!important;
+  top:56%!important;
+  width:min(1120px,94vw)!important;
+  height:min(1120px,94vw)!important;
+  transform:translate(-50%,-50%)!important;
+  display:grid!important;
+  place-items:center!important;
+  z-index:1!important;
+  background:transparent!important;
+  border:0!important;
+  outline:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  overflow:visible!important;
+  pointer-events:none!important;
+  opacity:1!important;
+}
+#globeStage .globeCanvas{
+  width:min(1000px,88vw)!important;
+  height:auto!important;
+  aspect-ratio:1!important;
+  opacity:.88!important;
+  background:transparent!important;
+  border:0!important;
+  outline:0!important;
+  mix-blend-mode:normal!important;
+  filter:
+    drop-shadow(0 30px 85px rgba(0,0,0,.20))
+    drop-shadow(0 0 55px rgba(76,132,150,.12))!important;
+  pointer-events:none!important;
+}
+#globeStage .globeAura{
+  position:absolute!important;
+  width:min(1060px,93vw)!important;
+  aspect-ratio:1!important;
+  left:50%!important;
+  top:50%!important;
+  transform:translate(-50%,-50%)!important;
+  border-radius:50%!important;
+  background:radial-gradient(circle,rgba(68,118,135,.13) 0%,rgba(68,118,135,.045) 48%,transparent 72%)!important;
+  filter:blur(32px)!important;
+  z-index:-1!important;
+  pointer-events:none!important;
+}
+.heroIn{
+  position:relative!important;
+  z-index:8!important;
+  min-height:calc(100vh - 82px)!important;
+  display:grid!important;
+  place-items:center!important;
+  width:100%!important;
+  max-width:1500px!important;
+  margin:0 auto!important;
+  padding:96px 24px 60px!important;
+  overflow:visible!important;
+}
+.copy{
+  z-index:10!important;
+  width:min(1250px,96vw)!important;
+  position:relative!important;
+  text-align:center!important;
+}
+.hero .copy h1{
+  font-size:clamp(108px,14.8vw,250px)!important;
+}
+@media(max-width:900px){
+  #globeStage.globeWrap{top:57%!important;width:120vw!important;height:120vw!important}
+  #globeStage .globeCanvas{width:108vw!important;opacity:.70!important}
+}
+@media(max-width:560px){
+  #globeStage.globeWrap{top:55%!important;width:140vw!important;height:140vw!important}
+  #globeStage .globeCanvas{width:125vw!important;opacity:.58!important}
+}
 </style>
 </head>
 <body><div class="noise"></div><div class="progress" id="progress"></div>
@@ -991,19 +1072,18 @@ body{background:var(--cream);color:#111}
 
 <header class="hero">
 <div class="heroBg"></div><div class="glow"></div>
-<div class="heroIn">
 <div class="globeWrap" id="globeStage" aria-hidden="true">
   <canvas class="globeCanvas" id="globeCanvas" aria-label="Interactive realistic rotating Earth"></canvas>
   <div class="globeAura"></div>
 </div>
+<div class="heroIn">
 <div class="copy reveal">
 <div class="eyebrow">India · Sourcing · Export</div>
 <h1>From India.<br><em>To anywhere.</em></h1>
 <p class="sub">Aryan International helps overseas buyers turn a product requirement into a practical sourcing conversation with Indian supply.</p>
 <div class="actions"><a class="btn" href="#quote">Tell us what you need</a><a class="btn alt" href="products.html?v=202610071">Explore products</a></div>
 <div class="micro"><span>Buyer-led sourcing</span><span>Clear specifications</span><span>Export coordination</span></div>
-</div>
-</div></header>
+</div></div></header>
 
 <div class="ticker"><div class="track"><span>India to global markets</span><span>Buyer-led sourcing</span><span>Clear specifications</span><span>Commercial clarity</span><span>Source smarter</span><span>Made for international buyers</span><span>India to the world</span></div></div>
 
@@ -1056,6 +1136,6 @@ body{background:var(--cream);color:#111}
 <form class="form reveal" action="https://formsubmit.co/aryaninternational00@gmail.com" method="POST"><input type="hidden" name="_next" value="https://arneshvarun99-afk.github.io/aryan-international-/thank-you.html"><input type="hidden" name="_subject" value="New Aryan International Buyer RFQ"><input type="hidden" name="_captcha" value="false"><input type="hidden" name="_template" value="table"><h3>Start your enquiry</h3><p class="muted" style="margin-top:5px">We'll prepare an email with your requirement.</p><input name="name" id="name" required placeholder="Name / company"><input name="email" id="email" type="email" required placeholder="Business email"><input name="country" id="country" required placeholder="Country"><input name="product" id="product" required placeholder="Product"><input name="quantity" id="qty" placeholder="Estimated quantity"><textarea name="details" id="details" placeholder="Specifications, packaging, target price, delivery destination..."></textarea><button type="submit">SEND BUYER ENQUIRY →</button></form></div></section>
 
 <footer class="footer">© 2026 <b>Aryan International</b> · India · aryaninternational00@gmail.com · +91 96776 41402</footer>
-<script src="index.js?v=202610071015"></script>
+<script src="index.js?v=202610071020"></script>
 </body>
 </html>
