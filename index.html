@@ -483,6 +483,132 @@ body{background:var(--cream);color:#111}
 @media(max-width:560px){
   .copy h1{font-size:clamp(58px,16vw,92px)!important;line-height:.80!important}
 }
+/* Final hero composition: giant Earth behind headline */
+.hero{
+  position:relative;
+  overflow:hidden;
+}
+.heroIn{
+  width:100%!important;
+  max-width:1500px!important;
+  min-height:calc(100vh - 82px)!important;
+  padding:115px 28px 70px!important;
+  margin:0 auto!important;
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  grid-template-rows:1fr!important;
+  place-items:center!important;
+  position:relative!important;
+  isolation:isolate!important;
+  gap:0!important;
+}
+#globeStage.globeWrap{
+  grid-area:1/1!important;
+  width:min(900px,78vw)!important;
+  height:min(900px,78vw)!important;
+  min-height:0!important;
+  margin:0!important;
+  position:relative!important;
+  display:grid!important;
+  place-items:center!important;
+  z-index:1!important;
+  pointer-events:auto!important;
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  overflow:visible!important;
+}
+#globeStage .globeCanvas{
+  width:min(840px,74vw)!important;
+  height:auto!important;
+  max-width:none!important;
+  opacity:.82!important;
+  mix-blend-mode:normal!important;
+  filter:drop-shadow(0 24px 70px rgba(0,0,0,.32)) drop-shadow(0 0 46px rgba(102,132,145,.12))!important;
+  transform-origin:center center!important;
+}
+.copy{
+  grid-area:1/1!important;
+  width:min(1180px,94vw)!important;
+  z-index:8!important;
+  align-self:center!important;
+  justify-self:center!important;
+  position:relative!important;
+  text-align:center!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  pointer-events:none!important;
+}
+.copy .eyebrow,
+.copy h1,
+.copy .sub,
+.copy .micro{pointer-events:none}
+.copy .actions,
+.copy .actions a{pointer-events:auto}
+.copy .eyebrow{justify-content:center}
+.copy h1{
+  font-family:"DM Serif Display",Georgia,serif!important;
+  font-size:clamp(106px,14.5vw,235px)!important;
+  line-height:.74!important;
+  letter-spacing:-.072em!important;
+  font-weight:400!important;
+  max-width:1180px!important;
+  margin:12px 0 28px!important;
+  color:#101010!important;
+  text-shadow:0 7px 30px rgba(245,240,231,.55)!important;
+}
+.copy h1 em{
+  color:var(--gold2)!important;
+  -webkit-text-stroke:1.5px #111!important;
+  text-shadow:0 7px 30px rgba(245,240,231,.55)!important;
+}
+.hero .sub{
+  max-width:720px!important;
+  color:#4d554f!important;
+  font-size:clamp(16px,1.45vw,22px)!important;
+  line-height:1.55!important;
+}
+.actions{justify-content:center!important}
+.micro{
+  justify-content:center!important;
+  border-top:1px solid #1112!important;
+  color:#66706a!important;
+  padding-top:14px!important;
+}
+.heroBg{
+  background:
+    radial-gradient(circle at 50% 45%,rgba(23,59,53,.10),transparent 28%),
+    radial-gradient(circle at 50% 55%,rgba(200,154,82,.10),transparent 42%),
+    linear-gradient(140deg,#f7f3eb 0%,#f5f0e7 55%,#efe9de 100%)!important;
+}
+.glow{
+  width:900px!important;
+  height:900px!important;
+  right:50%!important;
+  top:48%!important;
+  transform:translate(50%,-50%)!important;
+  background:radial-gradient(circle,rgba(23,59,53,.08),transparent 68%)!important;
+}
+.nav{
+  background:linear-gradient(180deg,#0d1620f5,#0d1620c7 75%,transparent)!important;
+  color:#fff!important;
+}
+.nav .brand,.nav .links a{color:#fff!important}
+@media(max-width:900px){
+  .heroIn{min-height:calc(100vh - 72px)!important;padding:95px 20px 55px!important}
+  #globeStage .globeCanvas{width:min(700px,92vw)!important;opacity:.68!important}
+  .copy{width:96%!important}
+  .copy h1{font-size:clamp(78px,14vw,150px)!important}
+}
+@media(max-width:560px){
+  .heroIn{min-height:calc(100vh - 64px)!important;padding:82px 16px 42px!important}
+  #globeStage.globeWrap{width:100vw!important;height:100vw!important}
+  #globeStage .globeCanvas{width:98vw!important;opacity:.56!important}
+  .copy h1{font-size:clamp(62px,16.7vw,96px)!important;line-height:.78!important}
+  .hero .sub{font-size:15px!important}
+}
 </style>
 </head>
 <body><div class="noise"></div><div class="progress" id="progress"></div>
