@@ -418,6 +418,42 @@ body{background:var(--cream);color:#111}
   .micro{gap:15px}
 }
 
+/* Final seamless globe treatment */
+#globeStage.globeWrap{
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  outline:0!important;
+  overflow:visible!important;
+  isolation:auto!important;
+}
+#globeStage.globeWrap::before,
+#globeStage.globeWrap::after{
+  content:none!important;
+  display:none!important;
+  border:0!important;
+  box-shadow:none!important;
+  background:none!important;
+}
+#globeStage .globeCanvas{
+  background:transparent!important;
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+  mix-blend-mode:screen;
+  filter:drop-shadow(0 16px 42px rgba(0,0,0,.38)) drop-shadow(0 0 48px rgba(91,143,161,.10));
+}
+.heroIn{
+  overflow:visible!important;
+}
+.heroBg{
+  background:
+    radial-gradient(circle at 50% 43%,rgba(36,86,76,.20),transparent 27%),
+    radial-gradient(circle at 50% 58%,rgba(200,154,82,.07),transparent 38%),
+    linear-gradient(140deg,#061018,#0b1720 55%,#0d1620)!important;
+}
+
 </style>
 </head>
 <body><div class="noise"></div><div class="progress" id="progress"></div>
