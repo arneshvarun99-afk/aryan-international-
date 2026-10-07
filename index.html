@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Aryan International connects global buyers with Indian supply through sourcing, quotation and export support.">
+<title>Aryan International | India, Ready for the World</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+:root{
+  --ink:#111214;
+  --navy:#0d1620;
+  --forest:#173b35;
+  --forest2:#24564c;
+  --gold:#c89a52;
+  --gold2:#e2c07e;
+  --cream:#f5f0e7;
+  --paper:#fffdf9;
+  --muted:#6d706f;
+  --line:#ded6ca;
+  --lime:#d8ff73;
+  --white:#fff;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Inter",Arial,sans-serif;overflow-x:hidden;font-size:16px}
+a{text-decoration:none;color:inherit}
+button,input,textarea,select{font:inherit}
+.noise{pointer-events:none;position:fixed;inset:0;z-index:100;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.025'/%3E%3C/svg%3E")}
+.progress{position:fixed;z-index:80;top:0;left:0;width:0;height:4px;background:linear-gradient(90deg,var(--gold),var(--gold2));box-shadow:0 0 20px #c89a5266}
+.nav{position:fixed;z-index:70;left:0;right:0;top:0;transition:.35s ease}.navin{height:82px;max-width:1280px;margin:auto;padding:0 28px;display:flex;align-items:center;justify-content:space-between;color:#fff}
+.nav.scrolled{background:rgba(13,22,32,.86);backdrop-filter:blur(18px);border-bottom:1px solid #ffffff12}
+.brand{font-family:"Space Grotesk",Arial,sans-serif;font-size:24px;letter-spacing:.10em}.brand b{font-weight:400;color:var(--gold2)}
+.links{display:flex;gap:31px;font-size:13px}.links a{opacity:.85;transition:.2s}.links a:hover{opacity:1;color:var(--gold2)}
+.navbtn{padding:13px 19px;border:1px solid #ffffff55;border-radius:999px;font-size:12px;transition:.25s}.navbtn:hover{background:#fff;color:var(--navy);transform:translateY(-2px)}
+
+.hero{min-height:980px;background:var(--navy);position:relative;color:#fff;overflow:hidden}
+.heroBg{position:absolute;inset:0;background:radial-gradient(circle at 70% 38%,#2a574b 0,transparent 30%),radial-gradient(circle at 16% 88%,#1c3340 0,transparent 28%),linear-gradient(140deg,#0b141d,#10202b 55%,#0f1a20)}
+.glow{position:absolute;width:550px;height:550px;border-radius:50%;background:radial-gradient(circle,#d8ff7324,transparent 65%);right:-130px;top:140px;filter:blur(3px);animation:pulseGlow 5s ease-in-out infinite}
+.glow2{position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,#c89a5224,transparent 67%);left:-100px;bottom:-80px;animation:pulseGlow 7s ease-in-out infinite reverse}
+.heroIn{max-width:1280px;margin:auto;padding:155px 28px 70px;display:grid;grid-template-columns:1.06fr .94fr;gap:50px;align-items:center;position:relative;z-index:2}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;text-transform:uppercase;letter-spacing:.25em;font-size:11px;font-weight:600;color:var(--gold2)}.eyebrow:before{content:"";width:32px;height:1px;background:var(--gold)}
+h1{font-family:"Space Grotesk",Arial,sans-serif;font-weight:400;font-size:clamp(68px,8.3vw,116px);line-height:.89;letter-spacing:-.055em;margin:24px 0 28px;max-width:950px}
+.hero .sub{font-size:21px;line-height:1.65;color:#d3dadd;max-width:690px}
+.actions{display:flex;gap:13px;margin:36px 0 38px;flex-wrap:wrap}
+.btn{padding:16px 24px;border-radius:999px;background:#f8f6ef;color:#111;font-weight:700;font-size:13px;transition:transform .25s,box-shadow .25s}.btn:hover{transform:translateY(-3px);box-shadow:0 15px 35px #0004}
+.btn.alt{background:transparent;color:#fff;border:1px solid #ffffff45}.btn.alt:hover{background:#ffffff12}
+.micro{display:flex;gap:28px;flex-wrap:wrap;color:#aeb8c0;font-size:12px}.micro span:before{content:"•";color:var(--gold);margin-right:8px}
+
+.globeWrap{height:590px;display:grid;place-items:center;position:relative;perspective:1000px}
+.globe{width:min(540px,78vw);aspect-ratio:1;border-radius:50%;position:relative;background:
+ radial-gradient(circle at 35% 28%,#426978 0,#284656 20%,#183240 43%,#0a151e 74%);
+ box-shadow:0 0 0 1px #ffffff13,0 0 120px #7eafbe1f,inset -35px -30px 90px #0007;
+ transition:transform .45s cubic-bezier(.2,.9,.2,1);
+}
+.globe::before{content:"";position:absolute;inset:-16px;border-radius:50%;border:1px solid #ffffff18;box-shadow:0 0 70px #87afbf12}
+.orbit{position:absolute;inset:-8%;border:1px solid #ffffff21;border-radius:50%;transform:rotate(16deg) perspective(600px) rotateX(67deg);animation:spin 12s linear infinite}
+.orbit.two{inset:4%;transform:rotate(-25deg) perspective(600px) rotateX(66deg);animation-duration:9s}
+.orbit.three{inset:-2%;border-color:#d8ff7355;transform:rotate(75deg) perspective(600px) rotateX(68deg);animation-duration:18s}
+.meridian,.parallel{position:absolute;inset:5%;border:1px solid #ffffff15;border-radius:50%}
+.meridian{transform:rotateY(55deg)}.meridian.m2{transform:rotateY(-55deg)}
+.parallel{inset:20% 5%;transform:rotateX(66deg)}.parallel.p2{inset:36% 5%;opacity:.5}
+.pin{position:absolute;width:14px;height:14px;border-radius:50%;background:var(--lime);box-shadow:0 0 24px #d9ff6b99;animation:pinPulse 2.8s ease-in-out infinite}
+.pin.one{left:30%;top:35%}.pin.two{right:23%;top:53%;animation-delay:.8s}.pin.three{left:52%;bottom:25%;animation-delay:1.3s}
+.route{position:absolute;left:30%;top:37%;width:205px;height:130px;border-top:1.5px solid var(--gold);border-radius:60% 50% 0 0;transform:rotate(18deg);filter:drop-shadow(0 0 8px #c89a5266)}
+.route.r2{left:42%;top:53%;width:135px;height:80px;transform:rotate(-37deg);opacity:.6}
+.floatCard{position:absolute;background:#fff;color:#17202a;padding:14px 16px;border-radius:15px;box-shadow:0 22px 55px #0005;font-size:11px;min-width:175px;transition:transform .3s}.floatCard b{display:block;font-size:14px;margin-bottom:4px}.floatCard span{color:var(--muted)}
+.fc1{top:10%;right:-2%;animation:float 4s ease-in-out infinite}.fc2{bottom:15%;left:-2%;animation:float 5s ease-in-out infinite 1s}.fc3{bottom:1%;right:8%;animation:float 4.5s ease-in-out infinite .5s}
+
+.ticker{background:#e6dfd3;overflow:hidden;border-block:1px solid #d8d0c4}.track{display:flex;white-space:nowrap;gap:62px;padding:18px 0;animation:marquee 24s linear infinite;font-size:12px;text-transform:uppercase;letter-spacing:.20em;color:#575146}.track span::after{content:"✦";color:var(--gold);margin-left:62px}
+
+.section{max-width:1280px;margin:auto;padding:130px 28px}.split{display:grid;grid-template-columns:.72fr 1.28fr;gap:100px}.h2{font-family:"Space Grotesk",Arial,sans-serif;font-size:clamp(52px,5.8vw,78px);line-height:.99;font-weight:400;margin:14px 0 28px;letter-spacing:-.04em}.lead{font-size:22px;line-height:1.62}.muted{color:var(--muted);font-size:16px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}.card{padding:31px;border:1px solid var(--line);min-height:260px;background:#fff;transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s}.card:hover{transform:translateY(-10px) rotateX(2deg);box-shadow:0 28px 70px #241d120d}.num{font-family:"Space Grotesk",Arial,sans-serif;color:var(--gold);font-size:34px}.card h3{font-family:"Space Grotesk",Arial,sans-serif;font-size:28px;font-weight:400;margin:18px 0 10px}
+
+.products{background:var(--cream)}.prodGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:52px}.prod{height:410px;position:relative;overflow:hidden;border-radius:10px;padding:28px;display:flex;align-items:flex-end;color:#fff;isolation:isolate;cursor:pointer}.prod:before{content:"";position:absolute;inset:0;background:var(--bg);background-size:cover;background-position:center;z-index:-2;transition:transform .9s cubic-bezier(.2,.7,.2,1)}.prod:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#0000 12%,#000c);z-index:-1}.prod:hover:before{transform:scale(1.11)}.prodContent{transform:translateY(0);transition:transform .4s}.prod:hover .prodContent{transform:translateY(-8px)}.prod h3{font-family:"Space Grotesk",Arial,sans-serif;font-size:29px;font-weight:400;margin:0}.prod p{font-size:13px;margin:5px 0 0;color:#e2e2e2}.p1{--bg:url('https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=1000&q=85')}.p2{--bg:url('https://images.unsplash.com/photo-1523381294911-8d3cead13475?auto=format&fit=crop&w=1000&q=85')}.p3{--bg:url('https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=1000&q=85')}.p4{--bg:linear-gradient(135deg,#bba077,#564839)}
+
+.process{background:var(--forest);color:#fff;position:relative;overflow:hidden}.process::before{content:"";position:absolute;width:620px;height:620px;border-radius:50%;background:radial-gradient(circle,#d8ff7312,transparent 65%);right:-180px;top:-180px;animation:pulseGlow 8s ease-in-out infinite}.process .section{padding-bottom:145px}.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:62px}.step{min-height:340px;padding:32px 28px;border-top:1px solid #ffffff2b;border-right:1px solid #ffffff17;position:relative;overflow:hidden;transition:background .35s,transform .35s}.step:last-child{border-right:0}.step:hover{background:#ffffff08;transform:translateY(-4px)}.stepNo{font-size:12px;letter-spacing:.18em;color:var(--gold2)}.step h3{font-family:"Space Grotesk",Arial,sans-serif;font-size:30px;font-weight:400;margin:17px 0}.step p{color:#c0c9c8;font-size:16px;line-height:1.65}.step .line{position:absolute;bottom:0;left:0;height:4px;width:20%;background:linear-gradient(90deg,var(--gold),var(--gold2));transition:width .8s ease}.step:hover .line{width:100%}
+
+.quote{position:relative;overflow:hidden}.quote:before{content:"RFQ";position:absolute;font-family:"Space Grotesk",Arial,sans-serif;font-size:35vw;color:#f0ebe1;right:-4vw;top:35px;line-height:.8;z-index:-1}.quoteGrid{display:grid;grid-template-columns:1fr 1fr;gap:90px;align-items:start}.form{background:#fff;border:1px solid var(--line);padding:36px;box-shadow:0 35px 100px #0000000d;transform:translateY(0);transition:transform .35s,box-shadow .35s}.form:hover{transform:translateY(-6px);box-shadow:0 45px 100px #00000012}.form h3{font-family:"Space Grotesk",Arial,sans-serif;font-size:34px;font-weight:400;margin:0}.form input,.form textarea,.form select{width:100%;padding:15px;margin-top:11px;border:1px solid #ddd7ce;font-size:15px;background:#fff;outline:none;transition:.2s}.form input:focus,.form textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px #c89a5218}.form textarea{min-height:125px}.form button{margin-top:12px;width:100%;border:0;border-radius:999px;padding:17px;background:var(--navy);color:#fff;font-weight:700;cursor:pointer;transition:.25s}.form button:hover{background:var(--forest);transform:translateY(-2px)}
+.footer{background:#0b1218;color:#9da6ad;text-align:center;padding:35px 24px;font-size:12px}.footer b{color:#dfc17f;font-weight:400}
+
+.reveal{opacity:0;transform:translateY(55px) scale(.985);transition:opacity .9s ease,transform 1s cubic-bezier(.2,.8,.2,1)}.reveal.show{opacity:1;transform:none}
+.word{display:inline-block;overflow:hidden;vertical-align:bottom}.word>span{display:inline-block;transform:translateY(110%);transition:transform .8s cubic-bezier(.2,.8,.2,1)}.word.show>span{transform:none}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}@keyframes spin{to{transform:rotate(379deg) perspective(600px) rotateX(67deg)}}@keyframes marquee{to{transform:translateX(-50%)}}@keyframes pulseGlow{0%,100%{transform:scale(1);opacity:.65}50%{transform:scale(1.12);opacity:1}}@keyframes pinPulse{0%,100%{transform:scale(1);box-shadow:0 0 20px #d9ff6b88}50%{transform:scale(1.35);box-shadow:0 0 32px #d9ff6baa}}
+
+
+.brandStage{height:92vh;min-height:720px;background:var(--navy);color:#fff;position:relative;overflow:hidden;display:grid;place-items:center}
+.brandStage:before{content:"";position:absolute;width:70vw;height:70vw;max-width:950px;max-height:950px;border-radius:50%;border:1px solid #ffffff0d;box-shadow:0 0 0 90px #ffffff03,0 0 0 180px #ffffff015;animation:brandOrbit 22s linear infinite}
+.brandStage:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 48%,#d8ff7312,transparent 32%),linear-gradient(120deg,transparent 35%,#c89a5209 50%,transparent 65%);pointer-events:none}
+.brandStageInner{width:min(1280px,94vw);position:relative;z-index:2;text-align:center}
+.brandKicker{font-size:11px;letter-spacing:.32em;color:var(--gold2);margin-bottom:30px}
+.interactiveBrand{display:flex;flex-direction:column;align-items:center;line-height:.76;letter-spacing:-.085em;user-select:none}
+.brandWord{font-family:"Space Grotesk",Arial,sans-serif;font-size:clamp(82px,15vw,220px);font-weight:700;display:block;will-change:transform;transition:transform .15s cubic-bezier(.2,.8,.2,1),letter-spacing .4s}
+.brandWord.outline{color:transparent;-webkit-text-stroke:1.5px #ffffff80;font-size:clamp(54px,9.6vw,140px);letter-spacing:-.065em;margin-top:18px}
+.brandStatement{display:flex;justify-content:center;align-items:center;gap:22px;margin-top:50px;font-size:12px;letter-spacing:.28em;color:#d6dddf}
+.brandStatement i{font-style:normal;color:var(--gold2);font-size:24px;animation:arrowPulse 1.7s ease-in-out infinite}
+.brandStageInner p{color:#8e9aa2;font-size:13px;margin-top:30px}
+.brandWord:hover{color:var(--gold2);text-shadow:0 0 55px #c89a5255}
+@keyframes brandOrbit{to{transform:rotate(360deg)}}@keyframes arrowPulse{0%,100%{transform:translateX(0)}50%{transform:translateX(9px)}}
+@media(max-width:560px){.brandStage{min-height:600px;height:78vh}.brandWord{font-size:22vw}.brandWord.outline{font-size:14vw}.brandStatement{margin-top:35px}.brandStageInner p{font-size:11px}}
+
+
+/* V7 product gallery */
+.v7grid{grid-template-columns:repeat(3,1fr)}
+.pGarlic{--bg:url('https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=1200&q=85')}
+.pTurmeric{--bg:url('https://images.unsplash.com/photo-1615485925600-97237c4fc1ec?auto=format&fit=crop&w=1200&q=85')}
+.pSpices{--bg:url('https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=1200&q=85')}
+.pPvcTap{--bg:url('https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=85')}
+.pPvcFitting{--bg:linear-gradient(135deg,#6e7f8b,#26343e)}
+.pCoir{--bg:url('https://images.unsplash.com/photo-1598902108854-10e335adac99?auto=format&fit=crop&w=1200&q=85')}
+.miniBadge{display:inline-block;padding:6px 9px;border:1px solid #ffffff45;border-radius:999px;font-size:9px;letter-spacing:.18em;color:#fff;margin-bottom:12px}.goldBadge{color:#f1d79f;border-color:#e2c07e66}
+.prodArrow{position:absolute;right:24px;top:23px;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;border:1px solid #ffffff45;font-size:18px;transition:.3s}.prod:hover .prodArrow{background:var(--gold);color:#111;border-color:var(--gold);transform:rotate(45deg) scale(1.08)}
+.catalogueHint{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:30px;color:#817d76;font-size:10px;letter-spacing:.22em}.catalogueHint i{font-style:normal;color:var(--gold);font-size:20px}
+
+.product-transition:before{content:"";position:fixed;inset:0;z-index:90;background:radial-gradient(circle at 50% 50%,#e2c07e,#173b35 24%,#0d1620 65%);animation:portalIn .62s cubic-bezier(.2,.8,.2,1) forwards}
+.product-transition:after{content:"ARYAN";position:fixed;z-index:91;left:50%;top:50%;transform:translate(-50%,-50%);font-family:"Space Grotesk",sans-serif;font-size:14vw;font-weight:800;letter-spacing:-.08em;color:#ffffff;mix-blend-mode:screen;animation:portalText .55s ease forwards}
+.productLaunch.launching{transform:scale(1.04);filter:blur(2px)}
+@keyframes portalIn{0%{clip-path:circle(0 at 50% 50%);opacity:1}100%{clip-path:circle(150% at 50% 50%);opacity:1}}
+@keyframes portalText{0%{opacity:0;letter-spacing:-.15em;transform:translate(-50%,-50%) scale(.7)}45%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(1.25);letter-spacing:-.08em}}
+
+@media(max-width:900px){.v7grid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.v7grid{grid-template-columns:1fr}.catalogueHint{font-size:9px}}
+
+@media(max-width:900px){.links{display:none}.heroIn,.split,.quoteGrid{grid-template-columns:1fr}.hero{min-height:auto}.heroIn{padding-top:135px}.globeWrap{height:510px}.cards,.prodGrid,.steps{grid-template-columns:1fr 1fr}.h2{font-size:48px}.navbtn{display:none}}
+@media(max-width:560px){.heroIn{padding:120px 20px 60px}.hero h1{font-size:59px}.hero .sub{font-size:17px}.globeWrap{height:430px}.floatCard{transform:scale(.82)}.cards,.prodGrid,.steps{grid-template-columns:1fr}.section{padding:84px 20px}.h2{font-size:42px}.step{min-height:250px}}
+</style>
+</head>
+<body>
+<div class="noise"></div><div class="progress" id="progress"></div>
+<nav class="nav" id="nav"><div class="navin"><a class="brand" href="#">ARYAN <b>INTERNATIONAL</b></a><div class="links"><a href="#why">Why us</a><a href="products.html">Products</a><a href="#process">Process</a><a href="#quote">RFQ</a></div><a class="navbtn" href="#quote">Start a conversation →</a></div></nav>
+
+<header class="hero">
+<div class="heroBg"></div><div class="glow"></div>
+<div class="heroIn">
+<div class="copy reveal"><div class="eyebrow">India → Global Markets</div>
+<h1>India to the world.<br><em>Beautifully.</em></h1>
+<p class="sub">Aryan International helps overseas buyers turn a product requirement into a practical sourcing conversation with Indian supply.</p>
+<div class="actions"><a class="btn" href="#quote">Tell us what you need</a><a class="btn alt" href="products.html">Explore products</a></div>
+<div class="micro"><span>Buyer-led sourcing</span><span>Clear specifications</span><span>Export coordination</span></div></div>
+<div class="globeWrap reveal">
+<div class="globe"><div class="orbit"></div><div class="orbit two"></div><div class="orbit three"></div><div class="meridian"></div><div class="meridian m2"></div><div class="parallel"></div><div class="pin one"></div><div class="pin two"></div><div class="pin three"></div><div class="route"></div><div class="route r2"></div></div>
+<div class="floatCard fc1"><b>Buyer enquiry</b><span>Product + quantity + destination</span></div>
+<div class="floatCard fc2"><b>India sourcing</b><span>Find the relevant supply</span></div>
+<div class="floatCard fc3"><b>Next step</b><span>Quote → sample → order</span></div>
+</div>
+</div></header>
+
+<div class="ticker"><div class="track"><span>Source smarter</span><span>Made for international buyers</span><span>India to the world</span><span>One requirement at a time</span><span>Source smarter</span><span>Made for international buyers</span><span>India to the world</span></div></div>
+
+<section class="section" id="why"><div class="split"><div class="reveal"><div class="eyebrow">Why Aryan</div><div class="h2">Less supplier hunting.<br>More useful conversations.</div></div><div class="reveal"><p class="lead">International sourcing gets expensive when the product, supplier and commercial terms don't line up. Our process starts with what the buyer actually needs.</p><div class="cards"><div class="card"><div class="num">01</div><h3>Requirement first</h3><p class="muted">Start with product, quantity, destination, specification and any target commercial details you already know.</p></div><div class="card"><div class="num">02</div><h3>Relevant sourcing</h3><p class="muted">Search for suitable Indian supply instead of forcing every buyer into a fixed catalogue.</p></div><div class="card"><div class="num">03</div><h3>Commercial clarity</h3><p class="muted">Work through MOQ, packaging, lead time and quotation details before you commit.</p></div></div></div></div></section>
+
+<section class="products" id="products">
+<div class="section">
+  <div class="reveal">
+    <div class="eyebrow">Export catalogue</div>
+    <div class="h2">Products with a story buyers can understand.</div>
+    <p class="lead">Open a product and get the commercial picture quickly: what it is, where it comes from, what to specify and how to request a quote.</p>
+  </div>
+
+  <div class="prodGrid v7grid">
+    <a class="prod pGarlic reveal productLaunch" href="product-garlic.html" data-product="garlic">
+      <div class="prodContent"><span class="miniBadge">AGRO</span><h3>Fresh Garlic</h3><p>Bulk Indian supply for international buyers.</p><span class="prodArrow">↗</span></div>
+    </a>
+    <a class="prod pTurmeric reveal productLaunch" href="product-erode-turmeric.html" data-product="turmeric">
+      <div class="prodContent"><span class="miniBadge goldBadge">GI ORIGIN</span><h3>Erode Turmeric</h3><p>GI-registered Erode Manjal sourcing.</p><span class="prodArrow">↗</span></div>
+    </a>
+    <a class="prod pSpices reveal productLaunch" href="product-spices.html" data-product="spices">
+      <div class="prodContent"><span class="miniBadge">SPICES</span><h3>Whole Spices</h3><p>Buyer-led sourcing across Indian spice categories.</p><span class="prodArrow">↗</span></div>
+    </a>
+    <a class="prod pPvcTap reveal productLaunch" href="product-pvc-taps.html" data-product="pvc-taps">
+      <div class="prodContent"><span class="miniBadge">PLUMBING</span><h3>PVC Taps</h3><p>Utility taps for distribution and trade.</p><span class="prodArrow">↗</span></div>
+    </a>
+    <a class="prod pPvcFitting reveal productLaunch" href="product-pvc-fittings.html" data-product="pvc-fittings">
+      <div class="prodContent"><span class="miniBadge">PLUMBING</span><h3>PVC Fittings</h3><p>Pipe connection and utility fittings.</p><span class="prodArrow">↗</span></div>
+    </a>
+    <a class="prod pCoir reveal productLaunch" href="product-coir.html" data-product="coir">
+      <div class="prodContent"><span class="miniBadge">NATURAL FIBRE</span><h3>Coir Products</h3><p>Natural-fibre products from Indian supply chains.</p><span class="prodArrow">↗</span></div>
+    </a>
+  </div>
+
+  <div class="catalogueHint">
+    <span>CLICK A PRODUCT</span><i>↓</i><span>OPEN THE BUYER DOSSIER</span>
+  </div>
+</div>
+</section>
+
+<section class="process"<section class="process" id="process"><div class="section"><div class="reveal"><div class="eyebrow">The flow</div><div class="h2">One clear path from<br>request to order.</div></div><div class="steps">
+<div class="step reveal"><div class="stepNo">01 · BRIEF</div><h3>Tell us the product</h3><p>Share what you want, how much you need and where it needs to go.</p><div class="line"></div></div>
+<div class="step reveal"><div class="stepNo">02 · SOURCE</div><h3>Find the fit</h3><p>Identify relevant Indian supply and narrow the options.</p><div class="line"></div></div>
+<div class="step reveal"><div class="stepNo">03 · QUOTE</div><h3>Work the numbers</h3><p>Align specification, MOQ, packaging, price and lead time.</p><div class="line"></div></div>
+<div class="step reveal"><div class="stepNo">04 · MOVE</div><h3>Take it forward</h3><p>Progress toward sample, order, documentation and shipment.</p><div class="line"></div></div>
+</div></div></section>
+
+<section class="section quote" id="quote"><div class="quoteGrid"><div class="reveal"><div class="eyebrow">RFQ · Request for quotation</div><div class="h2">Have a buyer requirement?</div><p class="lead">Put the brief in front of us. Even a rough requirement is a useful starting point.</p><p class="muted">International buyers can include their destination, estimated quantity, packaging, specifications or target price in the message.</p><div style="margin-top:28px;color:#777;font-size:14px">✉ aryaninternational00@gmail.com<br><br>☎ +91 96776 41402</div></div>
+<form class="form reveal" onsubmit="sendMail(event)"><h3>Start your enquiry</h3><p class="muted" style="margin-top:5px">We'll prepare an email with your requirement.</p><input id="name" required placeholder="Name / company"><input id="email" type="email" required placeholder="Business email"><input id="country" required placeholder="Country"><input id="product" required placeholder="Product"><input id="qty" placeholder="Estimated quantity"><textarea id="details" placeholder="Specifications, packaging, target price, delivery destination..."></textarea><button type="submit">SEND BUYER ENQUIRY →</button></form></div></section>
+
+<footer class="footer">© 2026 <b>Aryan International</b> · India · aryaninternational00@gmail.com · +91 96776 41402</footer>
+<script>
+const nav=document.getElementById('nav'),bar=document.getElementById('progress');
+function scrollFx(){
+  const h=document.documentElement.scrollHeight-innerHeight;
+  bar.style.width=(scrollY/Math.max(1,h)*100)+'%';
+  nav.classList.toggle('scrolled',scrollY>35);
+}
+addEventListener('scroll',scrollFx,{passive:true});scrollFx();
+
+const obs=new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting)e.target.classList.add('show');
+}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+document.querySelectorAll('.h2').forEach(el=>{
+  el.innerHTML=el.innerHTML.split(/(\s+)/).map(t=>{
+    if(/^\s+$/.test(t)) return t;
+    if(t.includes('<')) return t;
+    return `<span class="word"><span>${t}</span></span>`;
+  }).join('');
+});
+const wordObs=new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting){
+    const words=e.target.querySelectorAll('.word');
+    words.forEach((w,i)=>setTimeout(()=>w.classList.add('show'),i*55));
+    wordObs.unobserve(e.target);
+  }
+}),{threshold:.3});
+document.querySelectorAll('.h2').forEach(el=>wordObs.observe(el));
+
+
+const brandStage=document.getElementById('brandStage');
+const brandWords=document.querySelectorAll('.brandWord');
+if(brandStage){
+  brandStage.addEventListener('mousemove',e=>{
+    const r=brandStage.getBoundingClientRect();
+    const nx=e.clientX/r.width-.5, ny=e.clientY/r.height-.5;
+    brandWords.forEach(w=>{
+      const speed=parseFloat(w.dataset.speed)||1;
+      w.style.transform=`translate(${nx*34*speed}px,${ny*18*speed}px) rotateY(${nx*3*speed}deg)`;
+    });
+  });
+  brandStage.addEventListener('mouseleave',()=>brandWords.forEach(w=>w.style.transform=''));
+}
+function brandScroll(){
+  if(!brandStage)return;
+  const r=brandStage.getBoundingClientRect();
+  const p=(innerHeight-r.top)/(innerHeight+r.height);
+  if(p>-0.1 && p<1.1) brandWords.forEach(w=>{
+    const speed=parseFloat(w.dataset.speed)||1;
+    w.style.transform=`translateX(${(p-.5)*110*speed}px)`;
+  });
+}
+addEventListener('scroll',brandScroll,{passive:true});brandScroll();
+
+const hero=document.querySelector('.hero'),globe=document.querySelector('.globe');
+hero.addEventListener('mousemove',e=>{
+  const x=(e.clientX/innerWidth-.5)*16,y=(e.clientY/innerHeight-.5)*12;
+  globe.style.transform=`translate(${x}px,${y}px) rotateX(${-y*.25}deg) rotateY(${x*.25}deg)`;
+});
+hero.addEventListener('mouseleave',()=>globe.style.transform='translate(0,0)');
+
+document.querySelectorAll('.card,.prod,.step').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    if(innerWidth<900)return;
+    const r=card.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
+    const rx=((y-r.height/2)/r.height)*-3,ry=((x-r.width/2)/r.width)*3;
+    card.style.transform=`perspective(700px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-6px)`;
+  });
+  card.addEventListener('mouseleave',()=>card.style.transform='');
+});
+
+document.querySelectorAll('.btn,.navbtn').forEach(btn=>{
+  btn.addEventListener('mousemove',e=>{
+    const r=btn.getBoundingClientRect();
+    btn.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.06}px,${(e.clientY-r.top-r.height/2)*.06}px)`;
+  });
+  btn.addEventListener('mouseleave',()=>btn.style.transform='');
+});
+
+
+// Signature product launch interaction: the card "opens" into a dossier.
+document.querySelectorAll('.productLaunch').forEach(card=>{
+  card.addEventListener('click', e=>{
+    if(e.ctrlKey || e.metaKey || e.shiftKey) return;
+    e.preventDefault();
+    const href = card.getAttribute('href');
+    card.classList.add('launching');
+    document.body.classList.add('product-transition');
+    setTimeout(()=>{ window.location.href = href; }, 520);
+  });
+});
+
+function sendMail(e){
+ e.preventDefault();
+ const body=`Buyer enquiry\n\nName / company: ${name.value}\nEmail: ${email.value}\nCountry: ${country.value}\nProduct: ${product.value}\nEstimated quantity: ${qty.value}\nDetails: ${details.value}`;
+ location.href=`mailto:aryaninternational00@gmail.com?subject=${encodeURIComponent('International Buyer Enquiry - '+product.value)}&body=${encodeURIComponent(body)}`
+}
+</script>
+</body>
+</html>
