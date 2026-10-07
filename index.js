@@ -102,38 +102,6 @@ if(globeStage && globeCanvas){
       );
       globeGroup.add(earth);
 
-      // Draw real country boundaries from Natural Earth via world-atlas onto a transparent equirectangular map.
-      const borderCanvas=document.createElement('canvas');
-      borderCanvas.width=2048;
-      borderCanvas.height=1024;
-      const borderCtx=borderCanvas.getContext('2d');
-      borderCtx.clearRect(0,0,borderCanvas.width,borderCanvas.height);
-      borderCtx.strokeStyle='rgba(226,192,126,.78)';
-      borderCtx.lineWidth=1.25;
-      borderCtx.lineJoin='round';
-
-      const projection=d3.geoEquirectangular()
-        .scale(borderCanvas.width/(2*Math.PI))
-        .translate([borderCanvas.width/2,borderCanvas.height/2]);
-      const path=d3.geoPath(projection,borderCtx);
-      borderCtx.beginPath();
-      path(topojson.mesh(worldAtlas,worldAtlas.objects.countries));
-      borderCtx.stroke();
-
-      const borderTexture=new THREE.CanvasTexture(borderCanvas);
-      borderTexture.colorSpace=THREE.SRGBColorSpace;
-      const borderMesh=new THREE.Mesh(
-        new THREE.SphereGeometry(radius*1.006,96,96),
-        new THREE.MeshBasicMaterial({
-          map:borderTexture,
-          transparent:true,
-          opacity:.82,
-          depthWrite:false,
-          blending:THREE.AdditiveBlending
-        })
-      );
-      globeGroup.add(borderMesh);
-
       const atmosphere=new THREE.Mesh(
         new THREE.SphereGeometry(radius*1.04,64,64),
         new THREE.MeshBasicMaterial({
