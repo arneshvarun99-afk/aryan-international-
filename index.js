@@ -78,49 +78,6 @@ document.querySelectorAll('.btn,.navbtn').forEach(btn=>{
 });
 
 
-// Signature product launch interaction: the card "opens" into a dossier.
-
-// Product search on the homepage
-const productSearch=document.getElementById('productSearch');
-const clearProductSearch=document.getElementById('clearProductSearch');
-const productEmpty=document.getElementById('productEmpty');
-const productCards=[...document.querySelectorAll('.prodGrid .prod')];
-function filterProducts(){
-  const q=(productSearch?.value||'').trim().toLowerCase();
-  let visible=0;
-  productCards.forEach(card=>{
-    const match=!q || card.textContent.toLowerCase().includes(q);
-    card.style.display=match?'flex':'none';
-    if(match){
-      card.classList.add('show');
-      visible++;
-    }else{
-      card.classList.remove('show');
-    }
-  });
-  if(productEmpty) productEmpty.style.display=(q && !visible)?'block':'none';
-}
-productSearch?.addEventListener('input',filterProducts);
-clearProductSearch?.addEventListener('click',()=>{productSearch.value='';filterProducts();productSearch.focus()});
-
-document.querySelectorAll('.productLaunch').forEach(card=>{
-  card.addEventListener('click', e=>{
-    if(e.ctrlKey || e.metaKey || e.shiftKey) return;
-    e.preventDefault();
-    const href = card.getAttribute('href');
-    card.classList.add('launching');
-    document.body.classList.add('product-transition');
-    setTimeout(()=>{ window.location.href = href; }, 520);
-  });
-});
-
-/* Clear the transition overlay when returning via browser back/forward cache. */
-function resetProductTransition(){
-  document.body.classList.remove('product-transition');
-  document.querySelectorAll('.productLaunch.launching').forEach(el=>el.classList.remove('launching'));
-}
-addEventListener('pageshow', resetProductTransition);
-
 // Editorial motion inspired by premium athlete/product sites
 const motionReduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const heroVisual=document.querySelector('.globeWrap');
