@@ -15,7 +15,7 @@
     scene.fog=new THREE.FogExp2(0x030712,0.0008);
 
     camera=new THREE.PerspectiveCamera(45,window.innerWidth/window.innerHeight,0.1,1000);
-    camera.position.z=250;
+    camera.position.z=218;
 
     renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
     renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
@@ -43,7 +43,7 @@
     blueRimLight.position.set(-200,-50,-100);
     scene.add(blueRimLight);
 
-    const globeRadius=65;
+    const globeRadius=82;
     const geometry=new THREE.SphereGeometry(globeRadius,96,96);
     const textureLoader=new THREE.TextureLoader();
     const mapTexture=textureLoader.load('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg');
@@ -58,7 +58,7 @@
     globe.rotation.y=-.35;
     scene.add(globe);
 
-    const atmosphereGeo=new THREE.SphereGeometry(globeRadius+1.6,96,96);
+    const atmosphereGeo=new THREE.SphereGeometry(globeRadius+2.0,96,96);
     const atmosphereMat=new THREE.MeshBasicMaterial({
       color:0x60a5fa,
       transparent:true,
