@@ -14,12 +14,12 @@
     scene=new THREE.Scene();
     scene.fog=new THREE.FogExp2(0x030712,0.0008);
 
-    camera=new THREE.PerspectiveCamera(45,1,0.1,1000);
-    camera.position.z=214;
+    camera=new THREE.PerspectiveCamera(45,window.innerWidth/window.innerHeight,0.1,1000);
+    camera.position.z=210;
 
     renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
     renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
-    renderer.setSize(container.clientWidth,container.clientHeight);
+    renderer.setSize(window.innerWidth,window.innerHeight);
     renderer.toneMapping=THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure=1.1;
     container.appendChild(renderer.domElement);
@@ -43,54 +43,29 @@
     blueRimLight.position.set(-200,-50,-100);
     scene.add(blueRimLight);
 
-    const globeRadius=74;
-    const geometry=new THREE.SphereGeometry(globeRadius,128,128);
+    const globeRadius=96;
+    const geometry=new THREE.SphereGeometry(globeRadius,96,96);
     const textureLoader=new THREE.TextureLoader();
-    textureLoader.setCrossOrigin("anonymous");
+    const mapTexture=textureLoader.load('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg');
 
-    const earthMap=textureLoader.load("https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_atmos_2048.jpg");
-    const earthNormal=textureLoader.load("https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_normal_2048.jpg");
-    const earthSpecular=textureLoader.load("https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_specular_2048.jpg");
-    const cloudMap=textureLoader.load("https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_clouds_1024.png");
-
-    earthMap.colorSpace=THREE.SRGBColorSpace;
-
-    const material=new THREE.MeshPhongMaterial({
-      map:earthMap,
-      normalMap:earthNormal,
-      normalScale:new THREE.Vector2(0.55,0.55),
-      specularMap:earthSpecular,
-      specular:new THREE.Color(0x526b78),
-      shininess:18
+    const material=new THREE.MeshStandardMaterial({
+      map:mapTexture,
+      roughness:.62,
+      metalness:.08
     });
 
     globe=new THREE.Mesh(geometry,material);
-    globe.position.y=-4;
     globe.rotation.y=-.35;
-    globe.rotation.x=-.04;
     scene.add(globe);
 
-    const clouds=new THREE.Mesh(
-      new THREE.SphereGeometry(globeRadius*1.012,128,128),
-      new THREE.MeshPhongMaterial({
-        map:cloudMap,
-        transparent:true,
-        opacity:.15,
-        depthWrite:false
-      })
-    );
-    globe.add(clouds);
-
-    const atmosphereGeo=new THREE.SphereGeometry(globeRadius*1.045,128,128);
+    const atmosphereGeo=new THREE.SphereGeometry(globeRadius+2.0,96,96);
     const atmosphereMat=new THREE.MeshBasicMaterial({
-      color:0x72b8d8,
+      color:0x60a5fa,
       transparent:true,
-      opacity:.13,
-      side:THREE.BackSide,
-      blending:THREE.AdditiveBlending,
-      depthWrite:false
+      opacity:.15,
+      side:THREE.BackSide
     });
-    globe.add(new THREE.Mesh(atmosphereGeo,atmosphereMat));
+    scene.add(new THREE.Mesh(atmosphereGeo,atmosphereMat));
 
     createMinimalStarfield();
 
@@ -131,11 +106,9 @@
   }
 
   function onWindowResize(){
-    const width=Math.max(1,container.clientWidth);
-    const height=Math.max(1,container.clientHeight);
-    camera.aspect=width/height;
+    camera.aspect=window.innerWidth/window.innerHeight;
     camera.updateProjectionMatrix();
-    renderer.setSize(width,height,false);
+    renderer.setSize(window.innerWidth,window.innerHeight);
   }
 
   function animate(){
@@ -150,7 +123,6 @@
     camera.lookAt(scene.position);
 
     if(stars) stars.rotation.y-=.0001;
-    if(clouds) clouds.rotation.y+=.00008;
 
     // Scroll through the hero subtly changes auto-rotation speed.
     const r=hero.getBoundingClientRect();
