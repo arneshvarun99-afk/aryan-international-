@@ -14,12 +14,12 @@
     scene=new THREE.Scene();
     scene.fog=new THREE.FogExp2(0x030712,0.0008);
 
-    camera=new THREE.PerspectiveCamera(45,window.innerWidth/window.innerHeight,0.1,1000);
-    camera.position.z=210;
+    camera=new THREE.PerspectiveCamera(45,1,0.1,1000);
+    camera.position.z=214;
 
     renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
     renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
-    renderer.setSize(window.innerWidth,window.innerHeight);
+    renderer.setSize(container.clientWidth,container.clientHeight);
     renderer.toneMapping=THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure=1.1;
     container.appendChild(renderer.domElement);
@@ -43,7 +43,7 @@
     blueRimLight.position.set(-200,-50,-100);
     scene.add(blueRimLight);
 
-    const globeRadius=96;
+    const globeRadius=82;
     const geometry=new THREE.SphereGeometry(globeRadius,96,96);
     const textureLoader=new THREE.TextureLoader();
     const mapTexture=textureLoader.load('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg');
@@ -106,9 +106,11 @@
   }
 
   function onWindowResize(){
-    camera.aspect=window.innerWidth/window.innerHeight;
+    const width=Math.max(1,container.clientWidth);
+    const height=Math.max(1,container.clientHeight);
+    camera.aspect=width/height;
     camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth,window.innerHeight);
+    renderer.setSize(width,height,false);
   }
 
   function animate(){
