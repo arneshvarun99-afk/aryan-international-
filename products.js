@@ -1,6 +1,6 @@
 const DATA={
 garlic:{
- title:"Fresh Garlic",tag:"AGRO · BULK SUPPLY",bg:"url('https://commons.wikimedia.org/wiki/Special:FilePath/Garlic_bulbs.jpg')",
+ title:"Fresh Garlic",tag:"AGRO · BULK SUPPLY",bg:"url('garlic.svg')",
  hero:"A clean buyer brief turns a commodity enquiry into a quoteable requirement.",
  why:"For garlic, international buyers usually care about origin, grade, bulb size, cleanliness, packing format, quantity and destination. Lead with those variables and the conversation becomes immediately actionable.",
  buyer:"Tell us your destination, estimated quantity, required grade/size, packaging format and any inspection or documentation requirements you need.",
@@ -48,6 +48,61 @@ const top=document.getElementById('viewerTop'), title=document.getElementById('v
 let current=0;
 const order=cards.map(c=>c.dataset.key);
 
+/* Assign reliable product artwork and initialise scroll choreography. */
+cards.forEach((card,index)=>{
+  const data=DATA[card.dataset.key];
+  card.style.setProperty('--bg',data.bg);
+  card.style.setProperty('--cardSpeed',card.dataset.speed||1);
+  card.style.setProperty('--delay',`${40 + (index%3)*90}ms`);
+  card.style.setProperty('--index',index+1);
+});
+
+const grid=document.getElementById('productGrid');
+let motionFrame=0;
+function updateMotion(){
+  motionFrame=0;
+  const vh=innerHeight;
+  const gridRect=grid?grid.getBoundingClientRect():null;
+  cards.forEach(card=>{
+    const r=card.getBoundingClientRect();
+    const center=r.top+r.height/2;
+    const distance=(center-vh/2)/(vh*.72);
+    const speed=parseFloat(card.dataset.speed)||1;
+    const lift=Math.max(-30,Math.min(30,-distance*20*speed));
+    const imgY=Math.max(-22,Math.min(22,-distance*15*speed));
+    const imageScale=1.05+Math.min(.055,Math.abs(distance)*.028);
+    card.style.setProperty('--lift',`${lift}px`);
+    card.style.setProperty('--imgY',`${imgY}px`);
+    card.style.setProperty('--imgScale',imageScale.toFixed(3));
+  });
+  if(gridRect){
+    const hero=document.querySelector('.hero');
+    const heroCenter=hero?hero.getBoundingClientRect().top:0;
+    document.documentElement.style.setProperty('--heroShift',`${Math.max(-36,Math.min(20,heroCenter*-0.07))}px`);
+  }
+}
+function requestMotion(){
+  if(!motionFrame) motionFrame=requestAnimationFrame(updateMotion);
+}
+requestMotion();
+addEventListener('scroll',requestMotion,{passive:true});
+addEventListener('resize',requestMotion);
+
+cards.forEach(card=>{
+  card.addEventListener('pointermove',e=>{
+    if(matchMedia('(max-width: 900px)').matches) return;
+    const r=card.getBoundingClientRect();
+    const x=(e.clientX-r.left)/r.width-.5;
+    const y=(e.clientY-r.top)/r.height-.5;
+    card.style.setProperty('--ry',`${x*2.6}deg`);
+    card.style.setProperty('--rx',`${-y*2.2}deg`);
+  });
+  card.addEventListener('pointerleave',()=>{
+    card.style.setProperty('--ry','0deg');
+    card.style.setProperty('--rx','0deg');
+  });
+});
+
 function render(key){
  const d=DATA[key]; current=order.indexOf(key);
  top.style.setProperty('--panelBg',d.bg);
@@ -67,7 +122,7 @@ viewer.addEventListener('click',e=>{if(e.target===viewer)closeViewer()});
 addEventListener('keydown',e=>{if(e.key==='Escape')closeViewer()});
 next.addEventListener('click',()=>openViewer(order[(current+1)%order.length]));
 
-const io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('show')),{threshold:.13});
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target)}}),{threshold:.13,rootMargin:'0px 0px -6% 0px'});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 function progress(){const h=document.documentElement.scrollHeight-innerHeight;document.getElementById('progress').style.width=(scrollY/Math.max(1,h)*100)+'%'}
 addEventListener('scroll',progress,{passive:true});progress();
