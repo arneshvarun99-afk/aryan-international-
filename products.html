@@ -127,6 +127,28 @@
   .productGrid{margin-top:28px!important}
 }
 
+
+/* Force artwork onto the card itself, avoiding stacking-context issues with the pseudo-image layer. */
+.pCard{
+  background-color:#354149!important;
+  background-image:var(--bg)!important;
+  background-position:center!important;
+  background-repeat:no-repeat!important;
+  background-size:cover!important;
+  isolation:auto!important;
+}
+.pCard:before{
+  z-index:0!important;
+  background:transparent!important;
+  pointer-events:none!important;
+}
+.pCard:after{
+  z-index:1!important;
+  pointer-events:none!important;
+}
+.pCard > *{position:relative;z-index:2}
+.pCard > div{z-index:3}
+
 </style>
 </head>
 <body>
