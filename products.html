@@ -109,6 +109,24 @@
 .pCard.cascadeReady{opacity:0!important;transform:translate3d(0,34px,0)!important}
 .pCard.cascadeReady.show{opacity:1!important}
 
+
+/* Tight catalogue composition + local artwork */
+.hero{min-height:520px!important}
+.heroInner{padding:92px 28px 70px!important}
+.catalogue{padding:58px 28px 100px!important}
+.intro{opacity:1!important;transform:none!important;margin-bottom:0!important}
+.productGrid{margin-top:34px!important}
+.pCard{opacity:1!important;min-height:410px!important}
+.pCard.cascadeReady{opacity:0!important;transform:translate3d(0,26px,0)!important}
+.pCard.cascadeReady.show{opacity:1!important}
+.factLine{opacity:1!important;transform:none!important}
+@media(max-width:560px){
+  .hero{min-height:480px!important}
+  .heroInner{padding:75px 20px 55px!important}
+  .catalogue{padding:45px 20px 80px!important}
+  .productGrid{margin-top:28px!important}
+}
+
 </style>
 </head>
 <body>
@@ -123,7 +141,7 @@
 </div></header>
 
 <main class="catalogue" id="catalogue">
-<div class="intro reveal"><div><div class="eyebrow">Aryan catalogue</div><h2>Open a product.<br>Get the useful bits.</h2></div><div><p>No giant brochure maze. Each card opens into a focused product dossier so an overseas buyer can understand the opportunity and move straight to a quotation enquiry.</p></div></div>
+<div class="intro"><div><div class="eyebrow">Aryan catalogue</div><h2>Open a product.<br>Get the useful bits.</h2></div><div><p>No giant brochure maze. Each card opens into a focused product dossier so an overseas buyer can understand the opportunity and move straight to a quotation enquiry.</p></div></div>
 
 <div class="productGrid" id="productGrid">
 <div class="pCard" data-key="garlic" data-speed="1"><span class="openIcon">↗</span><div><span class="tag">AGRO</span><h3>Fresh Garlic</h3><p>Bulk Indian supply for international markets.</p></div></div>
@@ -134,7 +152,7 @@
 <div class="pCard" data-key="coir" data-speed="6"><span class="openIcon">↗</span><div><span class="tag">NATURAL FIBRE</span><h3>Coir Products</h3><p>Natural-fibre products for horticulture, agriculture and commercial use.</p></div></div>
 </div>
 
-<div class="factLine reveal"><div class="fact"><strong>6</strong><span>starting product families</span></div><div class="fact"><strong>RFQ</strong><span>built into every dossier</span></div><div class="fact"><strong>India →</strong><span>global buyer focus</span></div></div>
+<div class="factLine"><div class="fact"><strong>6</strong><span>starting product families</span></div><div class="fact"><strong>RFQ</strong><span>built into every dossier</span></div><div class="fact"><strong>India →</strong><span>global buyer focus</span></div></div>
 </main>
 
 <div class="viewer" id="viewer" aria-hidden="true">
