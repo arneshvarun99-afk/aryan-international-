@@ -28,8 +28,9 @@
     controls.enableDamping=true;
     controls.dampingFactor=.05;
     controls.enableZoom=false;
-    controls.autoRotate=true;
-    controls.autoRotateSpeed=autoRotateSpeed;
+    controls.autoRotate=false;
+    controls.autoRotateSpeed=.24;
+    setTimeout(()=>{ controls.autoRotate=true; },1800);
     controls.enablePan=false;
 
     const ambientLight=new THREE.AmbientLight(0xffffff,.8);
@@ -55,7 +56,7 @@
     });
 
     globe=new THREE.Mesh(geometry,material);
-    globe.rotation.y=-.35;
+    globe.rotation.y=-1.36;
     scene.add(globe);
 
     const atmosphereGeo=new THREE.SphereGeometry(globeRadius+2.0,96,96);
