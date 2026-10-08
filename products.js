@@ -44,6 +44,7 @@ coir:{
 };
 
 const cards=[...document.querySelectorAll('.pCard')], viewer=document.getElementById('viewer'), panel=document.getElementById('viewerPanel');
+cards.forEach(card=>card.classList.add('cascadeReady'));
 const top=document.getElementById('viewerTop'), title=document.getElementById('vTitle'), tag=document.getElementById('vEyebrow'), hero=document.getElementById('vHero'), why=document.getElementById('vWhy'), buyer=document.getElementById('vBuyer'), specs=document.getElementById('vSpecs'), rfq=document.getElementById('vRfq'), next=document.getElementById('vNext');
 let current=0;
 const order=cards.map(c=>c.dataset.key);
@@ -124,5 +125,12 @@ next.addEventListener('click',()=>openViewer(order[(current+1)%order.length]));
 
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target)}}),{threshold:.13,rootMargin:'0px 0px -6% 0px'});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+const cardIo=new IntersectionObserver(es=>es.forEach((e)=>{
+  if(e.isIntersecting){
+    e.target.classList.add('show');
+    cardIo.unobserve(e.target);
+  }
+}),{threshold:.08,rootMargin:'0px 0px -10% 0px'});
+cards.forEach(el=>cardIo.observe(el));
 function progress(){const h=document.documentElement.scrollHeight-innerHeight;document.getElementById('progress').style.width=(scrollY/Math.max(1,h)*100)+'%'}
 addEventListener('scroll',progress,{passive:true});progress();
