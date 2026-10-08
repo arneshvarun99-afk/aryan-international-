@@ -103,6 +103,12 @@
   .pCard,.pCard:before,.pCard > div,.heroInner,.hero:before{transition:none!important;transform:none!important}
 }
 
+
+/* Ensure product cards remain visible while their cascade animation runs. */
+.pCard{opacity:1!important}
+.pCard.cascadeReady{opacity:0!important;transform:translate3d(0,34px,0)!important}
+.pCard.cascadeReady.show{opacity:1!important}
+
 </style>
 </head>
 <body>
