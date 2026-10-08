@@ -43,29 +43,54 @@
     blueRimLight.position.set(-200,-50,-100);
     scene.add(blueRimLight);
 
-    const globeRadius=82;
-    const geometry=new THREE.SphereGeometry(globeRadius,96,96);
+    const globeRadius=74;
+    const geometry=new THREE.SphereGeometry(globeRadius,128,128);
     const textureLoader=new THREE.TextureLoader();
-    const mapTexture=textureLoader.load('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg');
+    textureLoader.setCrossOrigin("anonymous");
 
-    const material=new THREE.MeshStandardMaterial({
-      map:mapTexture,
-      roughness:.62,
-      metalness:.08
+    const earthMap=textureLoader.load("https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_atmos_2048.jpg");
+    const earthNormal=textureLoader.load("https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_normal_2048.jpg");
+    const earthSpecular=textureLoader.load("https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_specular_2048.jpg");
+    const cloudMap=textureLoader.load("https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_clouds_1024.png");
+
+    earthMap.colorSpace=THREE.SRGBColorSpace;
+
+    const material=new THREE.MeshPhongMaterial({
+      map:earthMap,
+      normalMap:earthNormal,
+      normalScale:new THREE.Vector2(0.55,0.55),
+      specularMap:earthSpecular,
+      specular:new THREE.Color(0x526b78),
+      shininess:18
     });
 
     globe=new THREE.Mesh(geometry,material);
+    globe.position.y=-4;
     globe.rotation.y=-.35;
+    globe.rotation.x=-.04;
     scene.add(globe);
 
-    const atmosphereGeo=new THREE.SphereGeometry(globeRadius+2.0,96,96);
+    const clouds=new THREE.Mesh(
+      new THREE.SphereGeometry(globeRadius*1.012,128,128),
+      new THREE.MeshPhongMaterial({
+        map:cloudMap,
+        transparent:true,
+        opacity:.15,
+        depthWrite:false
+      })
+    );
+    globe.add(clouds);
+
+    const atmosphereGeo=new THREE.SphereGeometry(globeRadius*1.045,128,128);
     const atmosphereMat=new THREE.MeshBasicMaterial({
-      color:0x60a5fa,
+      color:0x72b8d8,
       transparent:true,
-      opacity:.15,
-      side:THREE.BackSide
+      opacity:.13,
+      side:THREE.BackSide,
+      blending:THREE.AdditiveBlending,
+      depthWrite:false
     });
-    scene.add(new THREE.Mesh(atmosphereGeo,atmosphereMat));
+    globe.add(new THREE.Mesh(atmosphereGeo,atmosphereMat));
 
     createMinimalStarfield();
 
@@ -125,6 +150,7 @@
     camera.lookAt(scene.position);
 
     if(stars) stars.rotation.y-=.0001;
+    if(globe && globe.children[0]) globe.children[0].rotation.y+=.00008;
 
     // Scroll through the hero subtly changes auto-rotation speed.
     const r=hero.getBoundingClientRect();
