@@ -150,7 +150,7 @@
     camera.lookAt(scene.position);
 
     if(stars) stars.rotation.y-=.0001;
-    if(globe && globe.children[0]) globe.children[0].rotation.y+=.00008;
+    if(clouds) clouds.rotation.y+=.00008;
 
     // Scroll through the hero subtly changes auto-rotation speed.
     const r=hero.getBoundingClientRect();
